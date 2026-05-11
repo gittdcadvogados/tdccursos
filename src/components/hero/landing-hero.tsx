@@ -58,9 +58,10 @@ export function LandingHero() {
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-foreground-muted md:text-lg">
-            IBS, CBS, ICMS e a transição — impactos e estratégias para
-            transportadoras, contadores e advogados tributaristas. Com Rafael
-            Vieira, fiscal de tributos estaduais licenciado.
+            IBS, CBS e ICMS aplicados ao transporte de cargas e passageiros —
+            da incidência ao CT-e, do crédito ao planejamento da transição
+            2026–2033. Com Rafael Vieira, fiscal de tributos estaduais
+            licenciado.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">

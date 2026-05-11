@@ -10,7 +10,7 @@ const faqs = [
     a: "Profissionais que atuam direta ou indiretamente com transporte rodoviário: contadores e advogados tributaristas que atendem transportadoras, equipes fiscais e financeiras de empresas de transporte de cargas e passageiros, e gestores que precisam tomar decisões estratégicas na transição.",
   },
   {
-    q: "Preciso ter conhecimento prévio sobre IBS/CBS?",
+    q: "Preciso ter conhecimento prévio sobre IBS e CBS?",
     a: "Não. O Módulo 1 cobre os fundamentos da nova tributação do consumo desde a CF/88, garantindo que todos partam de uma base sólida antes dos módulos específicos de transporte.",
   },
   {
@@ -22,8 +22,16 @@ const faqs = [
     a: "O acesso ao conteúdo gravado e aos encontros é vitalício a partir da inscrição, incluindo atualizações futuras durante o período da transição (2026–2033).",
   },
   {
+    q: "O conteúdo é atualizado conforme novos regulamentos?",
+    a: "Sim. A transição vai gerar novos atos normativos, ajustes do Comitê Gestor e decisões dos tribunais. As aulas afetadas são revisadas e novas aulas são publicadas no mesmo acesso vitalício, sem custo adicional.",
+  },
+  {
+    q: "Posso pagar com CNPJ e receber nota fiscal?",
+    a: "Sim. A inscrição pode ser feita em nome da pessoa jurídica, com emissão de nota fiscal pela TDC Advogados (Cuiabá / MT) e pagamento por boleto, cartão ou Pix.",
+  },
+  {
     q: "Há certificado de conclusão?",
-    a: "Sim. Ao completar todas as aulas, oficinas e encontros, você recebe certificado digital com a carga horária total do curso (~31h).",
+    a: "Sim. Ao completar todas as aulas, oficinas e encontros, você recebe certificado digital com a carga horária total do curso (aproximadamente 31h).",
   },
 ];
 
@@ -33,8 +41,9 @@ export function FaqSection() {
   return (
     <section className="mx-auto max-w-3xl px-6 py-20 md:py-24">
       <header className="text-center">
-        <span className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-          Dúvidas frequentes
+        <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+          <span>▸</span>
+          DÚVIDAS_FREQUENTES
         </span>
         <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
           Perguntas comuns antes da inscrição

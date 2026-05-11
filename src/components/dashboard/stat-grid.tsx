@@ -3,15 +3,21 @@ import { BookOpen, Clock, Radio, Wrench } from "lucide-react";
 const stats = [
   { icon: BookOpen, value: "58", label: "Videoaulas gravadas" },
   { icon: Clock, value: "31h", label: "Carga horária total" },
-  { icon: Radio, value: "07", label: "Encontros ao vivo" },
-  { icon: Wrench, value: "02", label: "Oficinas práticas" },
+  { icon: Radio, value: "07", label: "Encontros ao vivo gravados" },
+  { icon: Wrench, value: "02", label: "Oficinas práticas de CT-e" },
 ];
 
 export function LandingStats() {
   return (
     <section className="relative border-y border-border bg-surface">
       <div className="bg-grid-tight pointer-events-none absolute inset-0 text-border/40 opacity-40" />
-      <div className="relative mx-auto grid max-w-content grid-cols-2 gap-px overflow-hidden rounded-none bg-border md:grid-cols-4">
+      <div className="relative mx-auto max-w-content px-6 pt-10 md:pt-12">
+        <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+          <span>▸</span>
+          MATERIAL_DO_CURSO
+        </span>
+      </div>
+      <div className="relative mx-auto mt-6 grid max-w-content grid-cols-2 gap-px overflow-hidden rounded-none bg-border md:grid-cols-4">
         {stats.map(({ icon: Icon, value, label }, i) => (
           <div
             key={label}

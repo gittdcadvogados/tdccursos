@@ -1,4 +1,4 @@
-import { Award, GraduationCap, Scale } from "lucide-react";
+import { Award, GraduationCap, MapPin, Scale } from "lucide-react";
 
 const credentials = [
   {
@@ -11,7 +11,11 @@ const credentials = [
   },
   {
     icon: Award,
-    label: "Foco em Reforma Tributária e setor de transporte",
+    label: "Foco em Reforma Tributária e setor de transporte rodoviário",
+  },
+  {
+    icon: MapPin,
+    label: "Base em Cuiabá / MT — atuação consultiva no Centro-Oeste",
   },
 ];
 
@@ -34,8 +38,9 @@ export function InstructorBio() {
         </div>
 
         <div>
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-            Quem ensina
+          <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+            <span>▸</span>
+            QUEM_ENSINA
           </span>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
             Rafael Vieira
@@ -47,10 +52,8 @@ export function InstructorBio() {
             em transportadoras e operações logísticas.
           </p>
           <p className="mt-3 text-foreground-muted">
-            Construiu este curso a partir do regulamento IBS/CBS, da LC
-            214/2025, do SINIEF 24/2024 e de pesquisas de campo com empresas
-            do setor — para preparar profissionais e empresas para a transição
-            de 2026 a 2033.
+            Construiu este curso a partir da LC 214/2025, do SINIEF 24/2024 e
+            de pesquisas de campo com empresas do setor.
           </p>
 
           <ul className="mt-8 space-y-3">

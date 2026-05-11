@@ -17,8 +17,8 @@ export function FinalCta() {
               <span className="text-accent">decide o frete de 2027</span>.
             </h2>
             <p className="mt-4 text-foreground-muted md:text-lg">
-              Inscreva-se agora e tenha acesso vitalício às videoaulas, aos 7
-              encontros ao vivo e às atualizações enquanto a transição
+              Inscreva-se agora e tenha acesso vitalício às 58 videoaulas, aos
+              7 encontros ao vivo e às atualizações enquanto a transição
               acontece.
             </p>
             <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row">
@@ -36,6 +36,10 @@ export function FinalCta() {
                 Antes, ver a aula gratuita
               </Link>
             </div>
+            <p className="tech-mono mt-6 text-xs text-foreground-muted">
+              <span className="text-accent">▸</span> acesso_vitalício ·
+              atualizações_inclusas · NF_para_CNPJ
+            </p>
           </div>
         </div>
       </div>

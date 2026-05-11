@@ -6,49 +6,49 @@ const modules = [
     n: 1,
     title: "A Nova Tributação do Consumo",
     summary:
-      "Fundamentos do IBS e da CBS — base conceitual para os módulos de incidência específica.",
+      "Da CF/88 ao IBS/CBS: arquitetura do tributo dual, não cumulatividade ampla e cronograma 2026–2033.",
     lessons: 8,
   },
   {
     n: 2,
     title: "IBS e CBS no Transporte Rodoviário de Cargas",
     summary:
-      "Módulo central — incidência, operações especiais, split payment e formalização.",
+      "Incidência sobre frete, subcontratação, redespacho, exportação e multimodal, mais split payment e o fim da informalidade.",
     lessons: 11,
   },
   {
     n: 3,
     title: "IBS e CBS no Transporte de Passageiros",
     summary:
-      "Intermunicipal, interestadual, internacional, urbano, fretamento e impacto contratual.",
+      "Intermunicipal, interestadual, urbano e fretamento — incluindo a imunidade do transporte público e contratos de longo prazo.",
     lessons: 5,
   },
   {
     n: 4,
     title: "Gestão de Créditos e Regimes Diferenciados",
     summary:
-      "TAC PF e MEI, bens de capital, Simples Nacional, cooperativas, acúmulo e ressarcimento.",
+      "TAC PF e MEI, bens de capital, Simples, cooperativas e o que fazer com o crédito acumulado durante a transição.",
     lessons: 11,
   },
   {
     n: 5,
     title: "ICMS na Transição",
     summary:
-      "O que sobrevive, benefícios sem equivalente, litigiosidade de 2027 e Centro-Oeste.",
+      "Coexistência com IBS/CBS, benefícios sem equivalente, ressarcimento em 20 anos e o ICMS na base do novo imposto em 2027.",
     lessons: 9,
   },
   {
     n: 6,
     title: "Obrigações Acessórias e Documentos Fiscais",
     summary:
-      "CT-e, CT-e OS, MDF-e, GTV-e, EFD e governança fiscal. Inclui 2 oficinas práticas.",
+      "CT-e e CT-e OS no padrão SINIEF 24/2024, MDF-e, GTV-e, EFD e extinção do EFD-Contribuições. Inclui 2 oficinas práticas.",
     lessons: 10,
   },
   {
     n: 7,
     title: "Estratégia e Planejamento na Transição",
     summary:
-      "Módulo de ação — Lucro Real x Presumido x Simples, precificação e blindagem jurídica.",
+      "Lucro Real, Presumido e Simples; Simples Híbrido; precificação do frete; split payment no caixa; blindagem jurídica.",
     lessons: 5,
   },
 ];
@@ -67,7 +67,7 @@ export function ModulesOverview() {
             7 módulos do fundamento à decisão estratégica
           </h2>
           <p className="mt-4 text-foreground-muted">
-            Da base conceitual da Reforma Tributária à precificação do frete e
+            Da base conceitual do tributo dual à precificação do frete e à
             documentação preventiva contra autuações.
           </p>
         </header>
