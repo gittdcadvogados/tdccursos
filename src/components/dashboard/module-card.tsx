@@ -1,122 +1,160 @@
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowUpRight, BookOpen, CheckCircle2 } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import {
+  CheckCircle2,
+  Circle,
+  Clock,
+  Plus,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+
+type LessonPreview = {
+  id: string;
+  slug: string;
+  title: string;
+  position: number;
+  duration_seconds: number | null;
+};
 
 type Props = {
   slug: string;
   position: number;
   title: string;
-  lessonsTotal: number;
-  lessonsDone: number;
-  coverUrl?: string | null;
+  lessons: LessonPreview[];
+  completedLessonIds: Set<string>;
+  defaultOpen?: boolean;
 };
 
-// Remove o prefixo "Módulo X — " do título pra deixar só o tema.
 function stripModulePrefix(title: string) {
   return title.replace(/^M[oó]dulo\s+\d+\s*[—-]\s*/i, "").trim();
+}
+
+function formatTotalDuration(totalSeconds: number): string {
+  if (totalSeconds <= 0) return "—";
+  const hours = Math.floor(totalSeconds / 3600);
+  const mins = Math.round((totalSeconds % 3600) / 60);
+  if (hours > 0) return `${hours}h ${mins.toString().padStart(2, "0")}min`;
+  return `${mins}min`;
 }
 
 export function ModuleCard({
   slug,
   position,
   title,
-  lessonsTotal,
-  lessonsDone,
-  coverUrl,
+  lessons,
+  completedLessonIds,
+  defaultOpen = false,
 }: Props) {
-  const pct = lessonsTotal > 0 ? Math.round((lessonsDone / lessonsTotal) * 100) : 0;
-  const isComplete = pct === 100 && lessonsTotal > 0;
+  const lessonsTotal = lessons.length;
+  const lessonsDone = lessons.filter((l) => completedLessonIds.has(l.id)).length;
+  const isComplete = lessonsTotal > 0 && lessonsDone === lessonsTotal;
+  const totalSeconds = lessons.reduce(
+    (acc, l) => acc + (l.duration_seconds ?? 0),
+    0,
+  );
   const cleanTitle = stripModulePrefix(title);
   const mod = position.toString().padStart(2, "0");
 
   return (
-    <Link
-      href={`/modulo/${slug}`}
-      className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-surface transition hover:border-accent/40 hover:shadow-[0_8px_24px_-12px_rgba(16,185,129,0.25)]"
+    <details
+      open={defaultOpen}
+      className="group overflow-hidden rounded-xl border border-border bg-surface transition hover:border-accent/40"
     >
-      {/* Capa */}
-      <div className="relative aspect-video w-full overflow-hidden bg-surface-muted">
-        {coverUrl ? (
-          <Image
-            src={coverUrl}
-            alt={cleanTitle}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 25vw"
-            className="object-cover transition duration-500 group-hover:scale-[1.03]"
-          />
-        ) : (
-          <div className="absolute inset-0">
-            <div
-              aria-hidden
-              className="bg-grid-fade absolute inset-0 text-border opacity-50"
-            />
-            <div
-              aria-hidden
-              className="glow-emerald absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 opacity-60"
-            />
-          </div>
-        )}
+      <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3.5 md:gap-4 md:px-5 md:py-4">
+        {/* Toggle */}
+        <span
+          aria-hidden
+          className="grid h-7 w-7 shrink-0 place-items-center rounded-md border border-border bg-background text-foreground-muted transition group-open:rotate-45 group-open:border-accent/40 group-open:text-accent"
+        >
+          <Plus className="h-3.5 w-3.5" />
+        </span>
 
-        {/* Overlay com identificador do módulo */}
-        <div className="absolute inset-0 flex items-end bg-linear-to-t from-black/65 via-black/10 to-transparent p-4">
-          <div className="flex w-full items-center justify-between gap-2">
-            <span className="tech-mono inline-flex items-center gap-1.5 rounded-md border border-white/20 bg-black/40 px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
-              <span className="tech-pulse h-1.5 w-1.5 rounded-full bg-accent" />
+        {/* Título */}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-accent">
               MOD_{mod}
             </span>
             {isComplete && (
-              <span className="tech-mono inline-flex items-center gap-1 rounded-md border border-accent/40 bg-accent/20 px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
-                <CheckCircle2 className="h-3 w-3" />
+              <span className="tech-mono inline-flex items-center gap-1 rounded-full border border-accent/30 bg-accent-soft px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-accent-soft-fg">
+                <CheckCircle2 className="h-2.5 w-2.5" />
                 Completo
               </span>
             )}
           </div>
-        </div>
-
-        {/* MOD_XX gigante quando não há capa */}
-        {!coverUrl && (
-          <div
-            aria-hidden
-            className="tech-mono pointer-events-none absolute inset-0 flex items-center justify-center text-7xl font-bold uppercase tracking-tighter text-accent/15"
-          >
-            MOD_{mod}
-          </div>
-        )}
-      </div>
-
-      {/* Corpo */}
-      <div className="flex flex-1 flex-col gap-3 p-4">
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="line-clamp-2 text-sm font-semibold leading-snug tracking-tight">
+          <h3 className="mt-0.5 truncate text-sm font-semibold tracking-tight md:text-base">
             {cleanTitle}
           </h3>
-          <ArrowUpRight className="h-4 w-4 shrink-0 text-foreground-muted transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
         </div>
 
-        <div className="tech-mono inline-flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-foreground-muted">
-          <BookOpen className="h-3 w-3" />
-          {lessonsTotal.toString().padStart(2, "0")} aulas
-        </div>
+        {/* Pill: aulas · duração */}
+        <span className="tech-mono inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-foreground-muted md:text-[11px]">
+          <span>
+            {lessonsTotal.toString().padStart(2, "0")} aulas
+          </span>
+          <span className="text-border">·</span>
+          <span className="inline-flex items-center gap-1">
+            <Clock className="h-2.5 w-2.5" />
+            {formatTotalDuration(totalSeconds)}
+          </span>
+        </span>
+      </summary>
 
-        <div className="mt-auto space-y-1.5">
-          <Progress value={pct} />
-          <div className="flex items-center justify-between text-[11px]">
-            <span className="tech-mono text-foreground-muted">
-              {lessonsDone.toString().padStart(2, "0")} / {lessonsTotal.toString().padStart(2, "0")}
-            </span>
-            <span
-              className={
-                isComplete
-                  ? "tech-mono font-semibold text-accent"
-                  : "tech-mono text-foreground-muted"
-              }
+      {/* Aulas */}
+      {lessonsTotal > 0 && (
+        <ul className="border-t border-border bg-background/40">
+          {lessons.map((l) => {
+            const done = completedLessonIds.has(l.id);
+            const isWorkshop = l.slug.startsWith("oficina");
+            const mins = l.duration_seconds
+              ? Math.round(l.duration_seconds / 60)
+              : null;
+
+            return (
+              <li key={l.id} className="border-b border-border last:border-b-0">
+                <Link
+                  href={`/aula/${l.slug}`}
+                  className="flex items-center gap-3 px-4 py-2.5 transition hover:bg-surface-muted md:gap-4 md:px-5"
+                >
+                  <span
+                    className={cn(
+                      "shrink-0",
+                      done ? "text-accent" : "text-foreground-muted",
+                    )}
+                  >
+                    {done ? (
+                      <CheckCircle2 className="h-4 w-4" />
+                    ) : (
+                      <Circle className="h-4 w-4" />
+                    )}
+                  </span>
+                  <span className="tech-mono shrink-0 text-[10px] font-semibold uppercase tracking-wider text-foreground-muted">
+                    {isWorkshop
+                      ? `OFICINA_${l.slug.replace("oficina-", "").padStart(2, "0")}`
+                      : `AULA_${l.position.toString().padStart(2, "0")}`}
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-medium">
+                    {l.title}
+                  </span>
+                  {mins !== null && (
+                    <span className="tech-mono shrink-0 inline-flex items-center gap-1 text-[11px] text-foreground-muted">
+                      <Clock className="h-3 w-3" />
+                      {mins}min
+                    </span>
+                  )}
+                </Link>
+              </li>
+            );
+          })}
+          <li className="border-t border-border bg-surface/50 px-4 py-2.5 md:px-5">
+            <Link
+              href={`/modulo/${slug}`}
+              className="tech-mono inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-accent transition hover:text-accent/80"
             >
-              {pct}% concluído
-            </span>
-          </div>
-        </div>
-      </div>
-    </Link>
+              ▸ Ver detalhes do módulo →
+            </Link>
+          </li>
+        </ul>
+      )}
+    </details>
   );
 }

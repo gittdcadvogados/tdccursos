@@ -7,7 +7,6 @@ import {
   Award,
   BookOpen,
   CheckCircle2,
-  ChevronRight,
   Clock,
   GraduationCap,
   Infinity as InfinityIcon,
@@ -223,28 +222,8 @@ export default async function ModuloPage(props: PageProps<"/modulo/[slug]">) {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         {/* Coluna esquerda */}
         <div className="min-w-0 space-y-10">
-          {/* Anchor nav */}
-          <nav className="sticky top-16 z-10 -mx-1 flex overflow-x-auto border-b border-border bg-background/80 backdrop-blur">
-            <ul className="tech-mono flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider">
-              {[
-                { id: "visao-geral", label: "Visão_geral" },
-                { id: "curriculo", label: "Currículo" },
-                { id: "instrutor", label: "Instrutor" },
-              ].map((item) => (
-                <li key={item.id}>
-                  <a
-                    href={`#${item.id}`}
-                    className="block border-b-2 border-transparent px-3 py-3 text-foreground-muted transition hover:border-accent/30 hover:text-foreground"
-                  >
-                    ▸ {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
           {/* Visão geral */}
-          <section id="visao-geral" className="scroll-mt-24 space-y-4">
+          <section id="visao-geral" className="space-y-4">
             <h2 className="text-xl font-semibold tracking-tight md:text-2xl">
               Sobre este módulo
             </h2>
@@ -287,131 +266,6 @@ export default async function ModuloPage(props: PageProps<"/modulo/[slug]">) {
             </div>
           </section>
 
-          {/* Currículo */}
-          <section id="curriculo" className="scroll-mt-24 space-y-3">
-            <div className="flex items-end justify-between gap-3">
-              <h2 className="text-xl font-semibold tracking-tight md:text-2xl">
-                Currículo
-              </h2>
-              <span className="tech-mono text-[11px] uppercase tracking-wider text-foreground-muted">
-                {done.toString().padStart(2, "0")} /{" "}
-                {total.toString().padStart(2, "0")} concluídas
-              </span>
-            </div>
-
-            <ul className="overflow-hidden rounded-xl border border-border bg-surface">
-              {mod.lessons?.map((lesson, idx) => {
-                const isDone = completedSet.has(lesson.id);
-                const isWorkshop = lesson.slug.startsWith("oficina");
-                const minutes = lesson.duration_seconds
-                  ? Math.round(lesson.duration_seconds / 60)
-                  : null;
-                const isLast = idx === (mod.lessons?.length ?? 0) - 1;
-
-                return (
-                  <li
-                    key={lesson.id}
-                    className={cn("border-border", !isLast && "border-b")}
-                  >
-                    <Link
-                      href={`/aula/${lesson.slug}`}
-                      className="group flex items-center gap-4 px-4 py-3.5 transition hover:bg-surface-muted md:px-5 md:py-4"
-                    >
-                      <span
-                        className={cn(
-                          "grid h-10 w-10 shrink-0 place-items-center rounded-full border ring-2 ring-transparent transition group-hover:ring-accent/20",
-                          isDone
-                            ? "border-accent/30 bg-accent-soft text-accent"
-                            : "border-border bg-surface text-foreground-muted",
-                        )}
-                      >
-                        {isDone ? (
-                          <CheckCircle2 className="h-4 w-4" />
-                        ) : (
-                          <PlayCircle className="h-4 w-4" />
-                        )}
-                      </span>
-
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-foreground-muted">
-                            {isWorkshop
-                              ? `OFICINA_${lesson.slug.replace("oficina-", "").padStart(2, "0")}`
-                              : `AULA_${lesson.position.toString().padStart(2, "0")}`}
-                          </span>
-                          {isWorkshop && (
-                            <span className="tech-mono rounded-full bg-amber-50 px-1.5 py-0.5 text-[9px] font-semibold uppercase text-amber-700 dark:bg-amber-950/40 dark:text-amber-500">
-                              PRATICA
-                            </span>
-                          )}
-                        </div>
-                        <div className="mt-0.5 truncate text-sm font-medium md:text-base">
-                          {lesson.title}
-                        </div>
-                      </div>
-
-                      {minutes !== null && (
-                        <span className="tech-mono hidden items-center gap-1 text-xs text-foreground-muted sm:inline-flex">
-                          <Clock className="h-3.5 w-3.5" />
-                          {minutes}min
-                        </span>
-                      )}
-
-                      <ChevronRight className="h-4 w-4 shrink-0 text-foreground-muted transition group-hover:translate-x-0.5 group-hover:text-accent" />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-
-          {/* Instrutor */}
-          <section id="instrutor" className="scroll-mt-24 space-y-4">
-            <h2 className="text-xl font-semibold tracking-tight md:text-2xl">
-              Quem ensina este módulo
-            </h2>
-            <div className="overflow-hidden rounded-xl border border-border bg-surface">
-              <div className="flex flex-col gap-5 p-5 md:flex-row md:gap-6 md:p-6">
-                <div className="relative aspect-square h-32 w-32 shrink-0 overflow-hidden rounded-xl border border-border bg-surface-muted">
-                  <div className="bg-grid-tight absolute inset-0 text-border opacity-40" />
-                  <div className="absolute inset-0 grid place-items-center text-foreground-muted">
-                    <GraduationCap className="h-10 w-10" />
-                  </div>
-                </div>
-                <div className="min-w-0 space-y-2">
-                  <div>
-                    <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-accent">
-                      ▸ PROFESSOR_TITULAR
-                    </span>
-                    <h3 className="mt-1 text-lg font-semibold tracking-tight">
-                      Rafael Vieira
-                    </h3>
-                  </div>
-                  <p className="text-sm text-foreground-muted">
-                    Fiscal de tributos estaduais licenciado, com atuação direta
-                    na interpretação e aplicação da legislação do ICMS no
-                    Centro-Oeste. Une a experiência da fiscalização à prática
-                    consultiva, com foco em transportadoras e operações
-                    logísticas.
-                  </p>
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {[
-                      "Direito Tributário",
-                      "Reforma Tributária",
-                      "Transporte",
-                    ].map((tag) => (
-                      <span
-                        key={tag}
-                        className="tech-mono rounded-md border border-border bg-surface-muted px-2 py-0.5 text-[10px] uppercase tracking-wider text-foreground-muted"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
         </div>
 
         {/* Sidebar direito */}

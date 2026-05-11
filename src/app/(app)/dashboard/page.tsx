@@ -18,7 +18,20 @@ import { ProfileBanner } from "@/components/dashboard/profile-banner";
 import { ModuleCard } from "@/components/dashboard/module-card";
 import { buttonVariants } from "@/components/ui/button";
 
-type ModuleRow = { id: string; slug: string; title: string; position: number };
+type LessonLite = {
+  id: string;
+  slug: string;
+  title: string;
+  position: number;
+  duration_seconds: number | null;
+};
+type ModuleRow = {
+  id: string;
+  slug: string;
+  title: string;
+  position: number;
+  lessons: LessonLite[];
+};
 type CourseRow = {
   id: string;
   slug: string;
@@ -50,9 +63,10 @@ export default async function DashboardPage() {
   const { data: courses } = await supabase
     .from("courses")
     .select(
-      "id, slug, title, description, cover_url, modules(id, slug, title, position)",
+      "id, slug, title, description, cover_url, modules(id, slug, title, position, lessons(id, slug, title, position, duration_seconds))",
     )
     .order("position", { referencedTable: "modules", ascending: true })
+    .order("position", { referencedTable: "modules.lessons", ascending: true })
     .returns<CourseRow[]>();
 
   const { data: lessons } = await supabase
@@ -109,11 +123,13 @@ export default async function DashboardPage() {
   }
   const completedByCourse = new Map<string, number>();
   const completedByModule = new Map<string, number>();
+  const completedLessonIds = new Set<string>();
   for (const c of completed ?? []) {
     const cid = c.lessons.modules.course_id;
     const mid = c.lessons.module_id;
     completedByCourse.set(cid, (completedByCourse.get(cid) ?? 0) + 1);
     completedByModule.set(mid, (completedByModule.get(mid) ?? 0) + 1);
+    completedLessonIds.add(c.lesson_id);
   }
 
   const totalLessons = lessons?.length ?? 0;
@@ -292,18 +308,24 @@ export default async function DashboardPage() {
               </CardHeader>
 
               <CardContent>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {course.modules?.map((m) => (
-                    <ModuleCard
-                      key={m.id}
-                      slug={m.slug}
-                      position={m.position}
-                      title={m.title}
-                      lessonsTotal={totalsByModule.get(m.id) ?? 0}
-                      lessonsDone={completedByModule.get(m.id) ?? 0}
-                      coverUrl={course.cover_url}
-                    />
-                  ))}
+                <div className="space-y-3">
+                  {course.modules?.map((m, idx) => {
+                    const activeModuleSlug = lastTouched?.lessons.modules.slug;
+                    const isActive = activeModuleSlug
+                      ? m.slug === activeModuleSlug
+                      : idx === 0;
+                    return (
+                      <ModuleCard
+                        key={m.id}
+                        slug={m.slug}
+                        position={m.position}
+                        title={m.title}
+                        lessons={m.lessons ?? []}
+                        completedLessonIds={completedLessonIds}
+                        defaultOpen={isActive}
+                      />
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
