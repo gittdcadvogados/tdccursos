@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   ArrowUpRight,
   Award,
-  BookOpen,
   CheckCircle2,
   Clock,
   GraduationCap,
@@ -16,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { ProfileBanner } from "@/components/dashboard/profile-banner";
+import { ModuleCard } from "@/components/dashboard/module-card";
 import { buttonVariants } from "@/components/ui/button";
 
 type ModuleRow = { id: string; slug: string; title: string; position: number };
@@ -24,6 +24,7 @@ type CourseRow = {
   slug: string;
   title: string;
   description: string | null;
+  cover_url: string | null;
   modules: ModuleRow[];
 };
 
@@ -48,25 +49,31 @@ export default async function DashboardPage() {
 
   const { data: courses } = await supabase
     .from("courses")
-    .select("id, slug, title, description, modules(id, slug, title, position)")
+    .select(
+      "id, slug, title, description, cover_url, modules(id, slug, title, position)",
+    )
     .order("position", { referencedTable: "modules", ascending: true })
     .returns<CourseRow[]>();
 
   const { data: lessons } = await supabase
     .from("lessons")
-    .select("id, modules!inner(course_id)")
-    .returns<{ id: string; modules: { course_id: string } }[]>();
+    .select("id, module_id, modules!inner(course_id)")
+    .returns<
+      { id: string; module_id: string; modules: { course_id: string } }[]
+    >();
 
   const { data: completed } = await supabase
     .from("lesson_progress")
-    .select("lesson_id, completed_at, lessons!inner(modules!inner(course_id))")
+    .select(
+      "lesson_id, completed_at, lessons!inner(module_id, modules!inner(course_id))",
+    )
     .eq("user_id", user!.id)
     .not("completed_at", "is", null)
     .returns<
       {
         lesson_id: string;
         completed_at: string;
-        lessons: { modules: { course_id: string } };
+        lessons: { module_id: string; modules: { course_id: string } };
       }[]
     >();
 
@@ -94,14 +101,19 @@ export default async function DashboardPage() {
     } | null>();
 
   const totalsByCourse = new Map<string, number>();
+  const totalsByModule = new Map<string, number>();
   for (const l of lessons ?? []) {
     const cid = l.modules.course_id;
     totalsByCourse.set(cid, (totalsByCourse.get(cid) ?? 0) + 1);
+    totalsByModule.set(l.module_id, (totalsByModule.get(l.module_id) ?? 0) + 1);
   }
   const completedByCourse = new Map<string, number>();
+  const completedByModule = new Map<string, number>();
   for (const c of completed ?? []) {
     const cid = c.lessons.modules.course_id;
+    const mid = c.lessons.module_id;
     completedByCourse.set(cid, (completedByCourse.get(cid) ?? 0) + 1);
+    completedByModule.set(mid, (completedByModule.get(mid) ?? 0) + 1);
   }
 
   const totalLessons = lessons?.length ?? 0;
@@ -280,32 +292,19 @@ export default async function DashboardPage() {
               </CardHeader>
 
               <CardContent>
-                <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {course.modules?.map((m) => (
-                    <li key={m.id}>
-                      <Link
-                        href={`/modulo/${m.slug}`}
-                        className="group flex items-center justify-between gap-3 rounded-lg border border-border bg-surface px-4 py-3 transition hover:border-accent/40 hover:bg-accent-soft/40"
-                      >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <span className="tech-mono text-xs font-semibold text-accent">
-                            {m.position.toString().padStart(2, "0")}
-                          </span>
-                          <div className="min-w-0">
-                            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground-muted">
-                              <BookOpen className="mr-1 inline h-3 w-3" />
-                              Módulo
-                            </div>
-                            <div className="truncate text-sm font-medium">
-                              {m.title}
-                            </div>
-                          </div>
-                        </div>
-                        <ArrowUpRight className="h-4 w-4 shrink-0 text-foreground-muted transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
-                      </Link>
-                    </li>
+                    <ModuleCard
+                      key={m.id}
+                      slug={m.slug}
+                      position={m.position}
+                      title={m.title}
+                      lessonsTotal={totalsByModule.get(m.id) ?? 0}
+                      lessonsDone={completedByModule.get(m.id) ?? 0}
+                      coverUrl={course.cover_url}
+                    />
                   ))}
-                </ul>
+                </div>
               </CardContent>
             </Card>
           );

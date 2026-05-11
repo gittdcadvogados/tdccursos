@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { PlayCircle } from "lucide-react";
 import { DecisoesCriticas } from "@/components/course/decisoes-criticas";
+import { BunnyPlayer } from "@/components/bunny-player";
+import { signEmbedUrl } from "@/lib/bunny/client";
 import { AulaGate } from "./aula-gate";
 import { isAulaInauguralUnlocked } from "./actions";
 
@@ -48,22 +50,30 @@ export default async function AulaInauguralPage({
 }
 
 function UnlockedState() {
+  const guid = process.env.BUNNY_AULA_INAUGURAL_VIDEO_GUID;
+  const signed = guid ? signEmbedUrl(guid) : null;
+
   return (
     <>
-      {/* Player */}
-      <div className="mt-10 aspect-video overflow-hidden rounded-2xl border border-border bg-surface-muted">
-        <div className="flex h-full items-center justify-center">
-          <div className="text-center">
-            <PlayCircle className="mx-auto h-12 w-12 text-foreground-muted" />
-            <p className="mt-3 text-sm text-foreground-muted">
-              Player de vídeo (placeholder · Bunny Stream)
-            </p>
-            <p className="tech-mono mt-1 text-[11px] text-foreground-muted">
-              ▸ video_guid · TODO
-            </p>
+      {signed ? (
+        <div className="mt-10">
+          <BunnyPlayer src={signed.src} title="Aula Inaugural — TDC CURSOS" />
+        </div>
+      ) : (
+        <div className="mt-10 aspect-video overflow-hidden rounded-2xl border border-border bg-surface-muted">
+          <div className="flex h-full items-center justify-center">
+            <div className="text-center">
+              <PlayCircle className="mx-auto h-12 w-12 text-foreground-muted" />
+              <p className="mt-3 text-sm text-foreground-muted">
+                Player de vídeo (placeholder · Bunny Stream)
+              </p>
+              <p className="tech-mono mt-1 text-[11px] text-foreground-muted">
+                ▸ BUNNY_AULA_INAUGURAL_VIDEO_GUID não configurada
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Decisões críticas — bloco do que o curso completo entrega */}
       <DecisoesCriticas maxWidth="narrow" padding="compact" />

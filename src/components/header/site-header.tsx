@@ -45,10 +45,13 @@ export async function SiteHeader() {
                 href="/login"
                 className={buttonVariants({ variant: "secondary", size: "sm" })}
               >
-                Entrar
+                Área do aluno
               </Link>
               <Link href="/cadastro" className={buttonVariants({ size: "sm" })}>
-                Cadastrar
+                <span className="sm:hidden">Inscrever-se</span>
+                <span className="hidden sm:inline">
+                  Inscrever-se no curso
+                </span>
               </Link>
             </>
           )}

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { BunnyPlayer } from "@/components/bunny-player";
+import { signEmbedUrl } from "@/lib/bunny/client";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { markLessonCompleted } from "../actions";
@@ -78,6 +79,11 @@ export default async function AulaPage(props: PageProps<"/aula/[slug]">) {
 
   const isCompleted = completedSet.has(lesson.id);
   const hasVideo = !!lesson.bunny_library_id && !!lesson.bunny_video_guid;
+  const signedSrc = hasVideo
+    ? signEmbedUrl(lesson.bunny_video_guid!, undefined, {
+        libraryIdOverride: lesson.bunny_library_id!,
+      }).src
+    : null;
   const isWorkshop = lesson.slug.startsWith("oficina");
   const minutes = lesson.duration_seconds
     ? Math.round(lesson.duration_seconds / 60)
@@ -141,12 +147,8 @@ export default async function AulaPage(props: PageProps<"/aula/[slug]">) {
           </header>
 
           {/* Player */}
-          {hasVideo ? (
-            <BunnyPlayer
-              libraryId={lesson.bunny_library_id!}
-              videoGuid={lesson.bunny_video_guid!}
-              title={lesson.title}
-            />
+          {signedSrc ? (
+            <BunnyPlayer src={signedSrc} title={lesson.title} />
           ) : (
             <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-dashed border-border bg-surface-muted">
               <div

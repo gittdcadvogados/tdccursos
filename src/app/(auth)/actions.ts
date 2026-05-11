@@ -82,3 +82,51 @@ export async function signOut() {
   await supabase.auth.signOut();
   redirect("/login");
 }
+
+// Etapa 1 do reset: dispara email com link tipo
+// `<supabase>/auth/v1/verify?token=...&type=recovery&redirect_to=<origin>/auth/confirm?next=/atualizar-senha`.
+// Sempre retornamos sucesso (mesmo se o email não existir) para não vazar
+// informação sobre quais emails têm conta — prática padrão.
+export async function requestPasswordReset(formData: FormData) {
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  if (!email) {
+    redirect("/recuperar-senha?error=Informe+seu+e-mail.");
+  }
+
+  const origin = await getOrigin();
+  const supabase = await createClient();
+
+  await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${origin}/auth/confirm?next=/atualizar-senha`,
+  });
+
+  redirect(
+    "/recuperar-senha?message=" +
+      encodeURIComponent(
+        "Se houver conta com esse e-mail, enviamos um link para redefinir a senha.",
+      ),
+  );
+}
+
+// Etapa 2 do reset: usuário já está autenticado via token de recovery
+// (a sessão foi estabelecida em /auth/confirm). Aqui só atualizamos a senha.
+export async function updatePassword(formData: FormData) {
+  const password = String(formData.get("password") ?? "");
+  const confirm = String(formData.get("password_confirm") ?? "");
+
+  if (password.length < 8) {
+    redirect("/atualizar-senha?error=A+senha+precisa+ter+no+m%C3%ADnimo+8+caracteres.");
+  }
+  if (password !== confirm) {
+    redirect("/atualizar-senha?error=As+senhas+n%C3%A3o+conferem.");
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    redirect(`/atualizar-senha?error=${encodeURIComponent(error.message)}`);
+  }
+
+  redirect("/dashboard");
+}
