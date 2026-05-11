@@ -1,10 +1,11 @@
 import Link from "next/link";
 import {
+  ArrowRight,
   CheckCircle2,
   Circle,
   Clock,
-  Plus,
 } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
 type LessonPreview = {
@@ -21,7 +22,6 @@ type Props = {
   title: string;
   lessons: LessonPreview[];
   completedLessonIds: Set<string>;
-  defaultOpen?: boolean;
 };
 
 function stripModulePrefix(title: string) {
@@ -42,7 +42,6 @@ export function ModuleCard({
   title,
   lessons,
   completedLessonIds,
-  defaultOpen = false,
 }: Props) {
   const lessonsTotal = lessons.length;
   const lessonsDone = lessons.filter((l) => completedLessonIds.has(l.id)).length;
@@ -51,57 +50,67 @@ export function ModuleCard({
     (acc, l) => acc + (l.duration_seconds ?? 0),
     0,
   );
+  const pct = lessonsTotal > 0 ? Math.round((lessonsDone / lessonsTotal) * 100) : 0;
   const cleanTitle = stripModulePrefix(title);
   const mod = position.toString().padStart(2, "0");
 
   return (
-    <details
-      open={defaultOpen}
-      className="group overflow-hidden rounded-xl border border-border bg-surface transition hover:border-accent/40"
-    >
-      <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3.5 md:gap-4 md:px-5 md:py-4">
-        {/* Toggle */}
-        <span
-          aria-hidden
-          className="grid h-7 w-7 shrink-0 place-items-center rounded-md border border-border bg-background text-foreground-muted transition group-open:rotate-45 group-open:border-accent/40 group-open:text-accent"
-        >
-          <Plus className="h-3.5 w-3.5" />
-        </span>
-
-        {/* Título */}
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-accent">
-              MOD_{mod}
-            </span>
-            {isComplete && (
-              <span className="tech-mono inline-flex items-center gap-1 rounded-full border border-accent/30 bg-accent-soft px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-accent-soft-fg">
-                <CheckCircle2 className="h-2.5 w-2.5" />
-                Completo
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition hover:border-accent/40 hover:shadow-[0_8px_24px_-12px_rgba(16,185,129,0.25)]">
+      {/* Header do card */}
+      <div className="border-b border-border bg-surface-muted/50 px-5 py-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-accent">
+                MOD_{mod}
               </span>
-            )}
+              {isComplete && (
+                <span className="tech-mono inline-flex items-center gap-1 rounded-full border border-accent/30 bg-accent-soft px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-accent-soft-fg">
+                  <CheckCircle2 className="h-2.5 w-2.5" />
+                  Completo
+                </span>
+              )}
+            </div>
+            <Link href={`/modulo/${slug}`}>
+              <h3 className="mt-1 text-lg font-semibold leading-tight tracking-tight transition hover:text-accent md:text-xl">
+                {cleanTitle}
+              </h3>
+            </Link>
           </div>
-          <h3 className="mt-0.5 truncate text-sm font-semibold tracking-tight md:text-base">
-            {cleanTitle}
-          </h3>
+          <span className="tech-mono shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-foreground-muted">
+            <span>{lessonsTotal.toString().padStart(2, "0")} aulas</span>
+            <span className="text-border">·</span>
+            <span className="inline-flex items-center gap-1">
+              <Clock className="h-2.5 w-2.5" />
+              {formatTotalDuration(totalSeconds)}
+            </span>
+          </span>
         </div>
 
-        {/* Pill: aulas · duração */}
-        <span className="tech-mono inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-foreground-muted md:text-[11px]">
-          <span>
-            {lessonsTotal.toString().padStart(2, "0")} aulas
-          </span>
-          <span className="text-border">·</span>
-          <span className="inline-flex items-center gap-1">
-            <Clock className="h-2.5 w-2.5" />
-            {formatTotalDuration(totalSeconds)}
-          </span>
-        </span>
-      </summary>
+        {/* Progresso */}
+        <div className="mt-3 space-y-1">
+          <Progress value={pct} />
+          <div className="flex items-center justify-between text-[10px]">
+            <span className="tech-mono text-foreground-muted">
+              {lessonsDone.toString().padStart(2, "0")} /{" "}
+              {lessonsTotal.toString().padStart(2, "0")} concluídas
+            </span>
+            <span
+              className={
+                isComplete
+                  ? "tech-mono font-semibold text-accent"
+                  : "tech-mono text-foreground-muted"
+              }
+            >
+              {pct}%
+            </span>
+          </div>
+        </div>
+      </div>
 
-      {/* Aulas */}
+      {/* Lista de aulas */}
       {lessonsTotal > 0 && (
-        <ul className="border-t border-border bg-background/40">
+        <ul className="flex-1 divide-y divide-border">
           {lessons.map((l) => {
             const done = completedLessonIds.has(l.id);
             const isWorkshop = l.slug.startsWith("oficina");
@@ -110,10 +119,10 @@ export function ModuleCard({
               : null;
 
             return (
-              <li key={l.id} className="border-b border-border last:border-b-0">
+              <li key={l.id}>
                 <Link
                   href={`/aula/${l.slug}`}
-                  className="flex items-center gap-3 px-4 py-2.5 transition hover:bg-surface-muted md:gap-4 md:px-5"
+                  className="flex items-center gap-3 px-5 py-2.5 transition hover:bg-surface-muted"
                 >
                   <span
                     className={cn(
@@ -145,16 +154,17 @@ export function ModuleCard({
               </li>
             );
           })}
-          <li className="border-t border-border bg-surface/50 px-4 py-2.5 md:px-5">
-            <Link
-              href={`/modulo/${slug}`}
-              className="tech-mono inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-accent transition hover:text-accent/80"
-            >
-              ▸ Ver detalhes do módulo →
-            </Link>
-          </li>
         </ul>
       )}
-    </details>
+
+      {/* Footer */}
+      <Link
+        href={`/modulo/${slug}`}
+        className="tech-mono inline-flex items-center justify-between border-t border-border bg-surface-muted/30 px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-accent transition hover:bg-accent-soft/40"
+      >
+        <span>▸ Ver detalhes do módulo</span>
+        <ArrowRight className="h-3.5 w-3.5" />
+      </Link>
+    </div>
   );
 }

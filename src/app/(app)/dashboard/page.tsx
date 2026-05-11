@@ -308,24 +308,17 @@ export default async function DashboardPage() {
               </CardHeader>
 
               <CardContent>
-                <div className="space-y-3">
-                  {course.modules?.map((m, idx) => {
-                    const activeModuleSlug = lastTouched?.lessons.modules.slug;
-                    const isActive = activeModuleSlug
-                      ? m.slug === activeModuleSlug
-                      : idx === 0;
-                    return (
-                      <ModuleCard
-                        key={m.id}
-                        slug={m.slug}
-                        position={m.position}
-                        title={m.title}
-                        lessons={m.lessons ?? []}
-                        completedLessonIds={completedLessonIds}
-                        defaultOpen={isActive}
-                      />
-                    );
-                  })}
+                <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                  {course.modules?.map((m) => (
+                    <ModuleCard
+                      key={m.id}
+                      slug={m.slug}
+                      position={m.position}
+                      title={m.title}
+                      lessons={m.lessons ?? []}
+                      completedLessonIds={completedLessonIds}
+                    />
+                  ))}
                 </div>
               </CardContent>
             </Card>
