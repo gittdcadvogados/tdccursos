@@ -11,10 +11,7 @@ export function Logo({ className }: { className?: string }) {
       </span>
       <div className="flex flex-col leading-none">
         <span className="text-sm font-semibold tracking-tight">
-          Plataforma TDC
-        </span>
-        <span className="text-[10px] uppercase tracking-[0.14em] text-foreground-muted">
-          Oratória · Advocacia
+          TDC CURSOS
         </span>
       </div>
     </div>

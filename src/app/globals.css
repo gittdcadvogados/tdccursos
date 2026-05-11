@@ -64,6 +64,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Containers — boxed layout */
+  --max-width-shell: 1600px;     /* limite externo da aplicação */
+  --max-width-content: 1360px;   /* container de conteúdo interno */
 }
 
 * {
@@ -100,4 +104,92 @@ body {
     linear-gradient(to right, currentColor 1px, transparent 1px),
     linear-gradient(to bottom, currentColor 1px, transparent 1px);
   background-size: 32px 32px;
+}
+
+/* Grid com fade radial — vibe "spotlight tech" */
+.bg-grid-fade {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 40%,
+    black 0%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 40%,
+    black 0%,
+    transparent 100%
+  );
+}
+
+/* Grid pequeno e mais denso — para topo de seções */
+.bg-grid-tight {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Pattern pontilhado */
+.bg-dots {
+  background-image: radial-gradient(
+    var(--border-strong) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+}
+
+/* Scanlines bem sutis (vibe CRT/terminal) */
+.bg-scan {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    color-mix(in oklab, var(--foreground) 3%, transparent) 4px
+  );
+}
+
+/* Glow orb emerald — para pontuar cantos / blocos */
+.glow-emerald {
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--accent) 28%, transparent) 0%,
+    transparent 70%
+  );
+  filter: blur(60px);
+}
+
+/* Borda animada com gradiente verde discreto (chips, badges) */
+@keyframes tech-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+.tech-pulse {
+  animation: tech-pulse 2.4s ease-in-out infinite;
+}
+
+/* Ticker horizontal infinito */
+@keyframes tech-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.tech-marquee {
+  animation: tech-marquee 28s linear infinite;
+}
+
+/* Badge mono — números/labels estilo terminal */
+.tech-mono {
+  font-family: var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  font-feature-settings: "tnum", "ss01";
+  letter-spacing: 0.02em;
+}
+
+/* Anel de progresso radial — controle do ângulo via --progress */
+.progress-ring {
+  background: conic-gradient(
+    var(--accent) var(--progress, 0deg),
+    var(--surface-muted) 0deg
+  );
 }

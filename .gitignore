@@ -35,7 +35,12 @@ yarn-error.log*
 
 # MCP config (contém tokens de API)
 .mcp.json
-.claude/settings.local.json
+
+# Claude Code — state local do dev (não commitar)
+.claude/
+
+# Credenciais OAuth baixadas do Google Cloud (NUNCA commitar)
+client_secret_*.json
 
 # vercel
 .vercel
@@ -43,3 +48,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# template de referência visual (não entra no build/git)
+/modelo/

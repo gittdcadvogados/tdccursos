@@ -13,8 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Plataforma TDC — Oratória para Advogados",
-  description: "Plataforma de cursos da TDC Advogados.",
+  title: {
+    default:
+      "TDC CURSOS — Reforma Tributária no Transporte Rodoviário",
+    template: "%s",
+  },
+  description:
+    "Plataforma de cursos da TDC Advogados — IBS, CBS, ICMS e a transição da Reforma Tributária aplicada ao transporte rodoviário.",
 };
 
 export default function RootLayout({
@@ -29,7 +34,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        {children}
+        <div className="mx-auto flex w-full max-w-shell flex-1 flex-col">
+          {children}
+        </div>
       </body>
     </html>
   );

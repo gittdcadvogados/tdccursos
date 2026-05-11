@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { GoogleSignInButton } from "@/components/form/google-sign-in";
 
 export default async function LoginPage(props: PageProps<"/login">) {
   const sp = await props.searchParams;
@@ -17,7 +18,7 @@ export default async function LoginPage(props: PageProps<"/login">) {
       <CardHeader>
         <CardTitle>Entrar na plataforma</CardTitle>
         <p className="text-sm text-foreground-muted">
-          Acesse com suas credenciais.
+          Acesse com sua conta Google ou e-mail.
         </p>
       </CardHeader>
 
@@ -34,6 +35,16 @@ export default async function LoginPage(props: PageProps<"/login">) {
             <span>{error}</span>
           </div>
         )}
+
+        <GoogleSignInButton next={next} label="Entrar com Google" />
+
+        <div className="relative my-2 flex items-center">
+          <div className="flex-1 border-t border-border" />
+          <span className="tech-mono px-3 text-[10px] uppercase tracking-wider text-foreground-muted">
+            ou_com_email
+          </span>
+          <div className="flex-1 border-t border-border" />
+        </div>
 
         <form action={signIn} className="space-y-4">
           <input type="hidden" name="next" value={next} />
@@ -53,6 +64,12 @@ export default async function LoginPage(props: PageProps<"/login">) {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Senha</Label>
+              <Link
+                href="/recuperar-senha"
+                className="text-xs text-foreground-muted hover:text-accent"
+              >
+                Esqueceu?
+              </Link>
             </div>
             <Input
               id="password"

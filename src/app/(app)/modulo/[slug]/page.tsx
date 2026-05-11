@@ -2,14 +2,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
+  ArrowRight,
   CheckCircle2,
   ChevronRight,
   Clock,
   PlayCircle,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { TechBackdrop } from "@/components/ui/tech-backdrop";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type LessonRow = {
@@ -26,6 +28,7 @@ type ModuleRow = {
   title: string;
   description: string | null;
   position: number;
+  course_id: string;
   lessons: LessonRow[];
 };
 
@@ -36,7 +39,7 @@ export default async function ModuloPage(props: PageProps<"/modulo/[slug]">) {
   const { data: mod } = await supabase
     .from("modules")
     .select(
-      "id, slug, title, description, position, lessons(id, slug, title, position, duration_seconds)",
+      "id, slug, title, description, position, course_id, lessons(id, slug, title, position, duration_seconds)",
     )
     .eq("slug", slug)
     .order("position", { referencedTable: "lessons", ascending: true })
@@ -67,6 +70,14 @@ export default async function ModuloPage(props: PageProps<"/modulo/[slug]">) {
   const total = mod.lessons?.length ?? 0;
   const done = (mod.lessons ?? []).filter((l) => completedSet.has(l.id)).length;
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  const totalDuration = (mod.lessons ?? []).reduce(
+    (acc, l) => acc + (l.duration_seconds ?? 0),
+    0,
+  );
+  const totalMinutes = Math.round(totalDuration / 60);
+
+  // Encontrar primeira aula não-concluída para CTA "Continuar"
+  const nextToWatch = (mod.lessons ?? []).find((l) => !completedSet.has(l.id));
 
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
@@ -76,95 +87,139 @@ export default async function ModuloPage(props: PageProps<"/modulo/[slug]">) {
         className="inline-flex items-center gap-1.5 text-sm text-foreground-muted transition hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
-        Voltar para o dashboard
+        Voltar ao dashboard
       </Link>
 
-      {/* Header */}
-      <header className="flex flex-col gap-3">
-        <span className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-          Módulo {mod.position.toString().padStart(2, "0")}
-        </span>
-        <h1 className="text-3xl font-semibold tracking-tight">{mod.title}</h1>
-        {mod.description && (
-          <p className="max-w-2xl text-sm text-foreground-muted">
-            {mod.description}
-          </p>
-        )}
+      {/* Header com backdrop tech */}
+      <header className="relative overflow-hidden rounded-2xl border border-border bg-surface p-6 md:p-8">
+        <TechBackdrop pattern="grid-fade" glow="top" />
+        <div className="relative space-y-3">
+          <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-accent">
+            <span>▸</span>
+            MODULO_{mod.position.toString().padStart(2, "0")}
+          </span>
+          <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+            {mod.title.replace(/^Módulo \d+ — /, "")}
+          </h1>
+          {mod.description && (
+            <p className="max-w-2xl text-sm text-foreground-muted md:text-base">
+              {mod.description}
+            </p>
+          )}
 
-        <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium tabular-nums text-foreground">
-              {done}/{total} aulas
-            </span>
-            <span className="rounded-full border border-accent/20 bg-accent-soft px-2 py-0.5 text-xs font-medium text-accent-soft-fg">
-              {pct}%
-            </span>
+          <div className="flex flex-col gap-3 pt-2 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="tech-mono text-2xl font-semibold tabular-nums text-foreground">
+                  {done.toString().padStart(2, "0")}
+                  <span className="text-foreground-muted">
+                    /{total.toString().padStart(2, "0")}
+                  </span>
+                </span>
+                <span className="text-xs text-foreground-muted">aulas</span>
+              </div>
+              <span className="text-border">·</span>
+              <div className="flex items-center gap-1.5 text-xs text-foreground-muted">
+                <Clock className="h-3.5 w-3.5" />
+                <span className="tech-mono">{totalMinutes} min</span>
+              </div>
+              <span className="text-border">·</span>
+              <span className="tech-mono rounded-full border border-accent/20 bg-accent-soft px-2.5 py-0.5 text-xs font-medium text-accent-soft-fg">
+                {pct}%
+              </span>
+            </div>
+
+            {nextToWatch && (
+              <Link
+                href={`/aula/${nextToWatch.slug}`}
+                className={buttonVariants({ size: "sm" })}
+              >
+                {done === 0 ? "Iniciar módulo" : "Continuar"}
+                <ArrowRight />
+              </Link>
+            )}
           </div>
-          <Progress value={pct} className="max-w-md" />
+
+          <Progress value={pct} className="mt-2" />
         </div>
       </header>
 
       {/* Lista de aulas */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Aulas do módulo</CardTitle>
-          <p className="text-sm text-foreground-muted">
-            Avance na ordem para melhor aproveitamento.
-          </p>
-        </CardHeader>
-        <CardContent>
-          <ul className="divide-y divide-border">
-            {mod.lessons?.map((lesson) => {
-              const isDone = completedSet.has(lesson.id);
-              const minutes = lesson.duration_seconds
-                ? Math.round(lesson.duration_seconds / 60)
-                : null;
+      <section>
+        <header className="mb-3 flex items-center justify-between">
+          <h2 className="tech-mono text-xs font-semibold uppercase tracking-wider text-foreground-muted">
+            ▸ AULAS_DO_MODULO
+          </h2>
+        </header>
 
-              return (
-                <li key={lesson.id}>
-                  <Link
-                    href={`/aula/${lesson.slug}`}
-                    className="group flex items-center gap-4 py-3 transition hover:bg-surface-muted/50 -mx-5 px-5 first:rounded-t-lg last:rounded-b-lg"
-                  >
-                    <span
-                      className={cn(
-                        "grid h-9 w-9 shrink-0 place-items-center rounded-full border",
-                        isDone
-                          ? "border-accent/30 bg-accent-soft text-accent-soft-fg"
-                          : "border-border bg-surface text-foreground-muted",
-                      )}
-                    >
-                      {isDone ? (
-                        <CheckCircle2 className="h-4 w-4" />
-                      ) : (
-                        <PlayCircle className="h-4 w-4" />
-                      )}
-                    </span>
+        <ul className="overflow-hidden rounded-xl border border-border bg-surface">
+          {mod.lessons?.map((lesson, idx) => {
+            const isDone = completedSet.has(lesson.id);
+            const isWorkshop = lesson.slug.startsWith("oficina");
+            const minutes = lesson.duration_seconds
+              ? Math.round(lesson.duration_seconds / 60)
+              : null;
+            const isLast = idx === (mod.lessons?.length ?? 0) - 1;
 
-                    <div className="min-w-0 flex-1">
-                      <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground-muted">
-                        Aula {lesson.position.toString().padStart(2, "0")}
-                      </div>
-                      <div className="truncate text-sm font-medium">
-                        {lesson.title}
-                      </div>
-                    </div>
-
-                    {minutes && (
-                      <span className="hidden items-center gap-1 text-xs text-foreground-muted sm:inline-flex">
-                        <Clock className="h-3.5 w-3.5" />
-                        {minutes} min
-                      </span>
+            return (
+              <li
+                key={lesson.id}
+                className={cn(
+                  "border-border",
+                  !isLast && "border-b",
+                )}
+              >
+                <Link
+                  href={`/aula/${lesson.slug}`}
+                  className="group flex items-center gap-4 px-4 py-3.5 transition hover:bg-surface-muted md:px-5 md:py-4"
+                >
+                  <span
+                    className={cn(
+                      "grid h-10 w-10 shrink-0 place-items-center rounded-full border ring-2 ring-transparent transition group-hover:ring-accent/20",
+                      isDone
+                        ? "border-accent/30 bg-accent-soft text-accent"
+                        : "border-border bg-surface text-foreground-muted",
                     )}
+                  >
+                    {isDone ? (
+                      <CheckCircle2 className="h-4 w-4" />
+                    ) : (
+                      <PlayCircle className="h-4 w-4" />
+                    )}
+                  </span>
 
-                    <ChevronRight className="h-4 w-4 shrink-0 text-foreground-muted transition group-hover:translate-x-0.5 group-hover:text-accent" />
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </CardContent>
-      </Card>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-foreground-muted">
+                        {isWorkshop
+                          ? `OFICINA_${lesson.slug.replace("oficina-", "").padStart(2, "0")}`
+                          : `AULA_${lesson.position.toString().padStart(2, "0")}`}
+                      </span>
+                      {isWorkshop && (
+                        <span className="tech-mono rounded-full bg-amber-50 px-1.5 py-0.5 text-[9px] font-semibold uppercase text-amber-700 dark:bg-amber-950/40 dark:text-amber-500">
+                          PRATICA
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-0.5 truncate text-sm font-medium md:text-base">
+                      {lesson.title}
+                    </div>
+                  </div>
+
+                  {minutes !== null && (
+                    <span className="tech-mono hidden items-center gap-1 text-xs text-foreground-muted sm:inline-flex">
+                      <Clock className="h-3.5 w-3.5" />
+                      {minutes}min
+                    </span>
+                  )}
+
+                  <ChevronRight className="h-4 w-4 shrink-0 text-foreground-muted transition group-hover:translate-x-0.5 group-hover:text-accent" />
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
     </div>
   );
 }

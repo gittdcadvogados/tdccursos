@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { LogOut } from "lucide-react";
@@ -5,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { signOut } from "../(auth)/actions";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
+import { AppNav } from "@/components/sidebar/app-nav";
 
 function initials(name: string | null | undefined, email: string) {
   const source = (name?.trim() || email).trim();
@@ -27,30 +29,48 @@ export default async function AppLayout({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name")
+    .select("full_name, display_name, avatar_url")
     .eq("id", user.id)
     .maybeSingle();
 
-  const display = profile?.full_name?.trim() || user.email!;
+  const display =
+    profile?.display_name?.trim() ||
+    profile?.full_name?.trim() ||
+    user.email!;
+  const userInitials = initials(profile?.full_name, user.email!);
 
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3">
+        <div className="flex h-14 items-center justify-between gap-4 px-6">
           <Link href="/dashboard" className="group">
             <Logo className="transition-opacity group-hover:opacity-80" />
           </Link>
 
           <div className="flex items-center gap-3">
-            <div className="hidden items-center gap-2 sm:flex">
-              <span
-                className="grid h-8 w-8 place-items-center rounded-full bg-accent-soft text-xs font-semibold text-accent-soft-fg ring-1 ring-accent/20"
-                aria-hidden
-              >
-                {initials(profile?.full_name, user.email!)}
-              </span>
+            <Link
+              href="/perfil"
+              className="hidden items-center gap-2 rounded-full transition hover:opacity-80 sm:flex"
+            >
+              {profile?.avatar_url ? (
+                <Image
+                  src={profile.avatar_url}
+                  alt={display}
+                  width={32}
+                  height={32}
+                  unoptimized
+                  className="h-8 w-8 rounded-full object-cover ring-1 ring-accent/20"
+                />
+              ) : (
+                <span
+                  className="grid h-8 w-8 place-items-center rounded-full bg-accent-soft text-xs font-semibold text-accent-soft-fg ring-1 ring-accent/20"
+                  aria-hidden
+                >
+                  {userInitials}
+                </span>
+              )}
               <span className="text-sm text-foreground-muted">{display}</span>
-            </div>
+            </Link>
 
             <form action={signOut}>
               <Button type="submit" variant="secondary" size="sm">
@@ -62,7 +82,10 @@ export default async function AppLayout({
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-6 py-10">{children}</main>
+      <div className="mx-auto flex w-full max-w-content gap-8 px-4 py-8 md:px-6">
+        <AppNav />
+        <main className="min-w-0 flex-1">{children}</main>
+      </div>
     </div>
   );
 }

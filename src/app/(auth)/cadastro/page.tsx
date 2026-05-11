@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { GoogleSignInButton } from "@/components/form/google-sign-in";
 
 export default async function CadastroPage(props: PageProps<"/cadastro">) {
   const sp = await props.searchParams;
@@ -15,7 +16,7 @@ export default async function CadastroPage(props: PageProps<"/cadastro">) {
       <CardHeader>
         <CardTitle>Criar conta</CardTitle>
         <p className="text-sm text-foreground-muted">
-          Cadastre-se para acessar o curso.
+          Cadastre-se com Google ou seu e-mail.
         </p>
       </CardHeader>
 
@@ -26,6 +27,16 @@ export default async function CadastroPage(props: PageProps<"/cadastro">) {
             <span>{error}</span>
           </div>
         )}
+
+        <GoogleSignInButton label="Cadastrar com Google" />
+
+        <div className="relative my-2 flex items-center">
+          <div className="flex-1 border-t border-border" />
+          <span className="tech-mono px-3 text-[10px] uppercase tracking-wider text-foreground-muted">
+            ou_com_email
+          </span>
+          <div className="flex-1 border-t border-border" />
+        </div>
 
         <form action={signUp} className="space-y-4">
           <div className="space-y-1.5">
@@ -69,6 +80,10 @@ export default async function CadastroPage(props: PageProps<"/cadastro">) {
             Criar conta
             <ArrowRight />
           </Button>
+
+          <p className="pt-1 text-center text-[11px] text-foreground-muted">
+            Você receberá um e-mail para confirmar a conta antes de acessar.
+          </p>
         </form>
 
         <p className="pt-2 text-center text-sm text-foreground-muted">

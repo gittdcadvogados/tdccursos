@@ -1,7 +1,26 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/login", "/cadastro", "/auth/callback", "/auth/confirm"];
+// Apenas estas áreas exigem login. Tudo mais (landing, aula inaugural, sobre,
+// contato, páginas legais, fluxo de auth) é público.
+const PROTECTED_PREFIXES = [
+  "/dashboard",
+  "/curso",
+  "/modulo",
+  "/aula",
+  "/calendario",
+  "/oficinas",
+  "/certificado",
+  "/perfil",
+  "/configuracoes",
+  "/duvidas",
+];
+
+function isProtected(pathname: string) {
+  return PROTECTED_PREFIXES.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`),
+  );
+}
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -32,9 +51,8 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
 
-  if (!user && !isPublic && pathname !== "/") {
+  if (!user && isProtected(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("next", pathname);
