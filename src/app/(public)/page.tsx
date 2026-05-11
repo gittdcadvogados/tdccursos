@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { LandingHero } from "@/components/hero/landing-hero";
 import { LandingStats } from "@/components/dashboard/stat-grid";
 import { ModulesOverview } from "@/components/course/modules-overview";
+import { DecisoesCriticas } from "@/components/course/decisoes-criticas";
 import { InstructorBio } from "@/components/instructor/instructor-bio";
 import { FaqSection } from "@/components/faq/faq-section";
 import { FinalCta } from "@/components/cta/final-cta";
@@ -19,6 +20,7 @@ export default function HomePage() {
       <LandingHero />
       <LandingStats />
       <ModulesOverview />
+      <DecisoesCriticas />
       <InstructorBio />
       <FaqSection />
       <FinalCta />

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ModulesOverview } from "@/components/course/modules-overview";
 import { InstructorBio } from "@/components/instructor/instructor-bio";
 import { LandingStats } from "@/components/dashboard/stat-grid";
+import { DecisoesCriticas } from "@/components/course/decisoes-criticas";
 
 export const metadata: Metadata = {
   title: "Sobre o curso — TDC CURSOS",
@@ -25,6 +26,7 @@ export default function SobrePage() {
       </section>
       <LandingStats />
       <ModulesOverview />
+      <DecisoesCriticas />
       <InstructorBio />
     </>
   );
