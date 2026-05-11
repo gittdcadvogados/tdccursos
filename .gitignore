@@ -51,3 +51,10 @@ next-env.d.ts
 
 # template de referência visual (não entra no build/git)
 /modelo/
+
+# Material de trabalho / planejamento (não entra no repo público)
+Grade do Curso*.md
+Grade do Curso*.pdf
+evals-*.jsonl
+relatorio_*.docx
+roteirista-*.md
