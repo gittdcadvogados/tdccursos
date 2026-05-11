@@ -1,0 +1,29 @@
+; Zone file BIND (RFC 1035) — tdccursos.com.br
+; Estado DNS desejado para a Plataforma TDC CURSOS rodando no VPS Coolify.
+;
+; - Apex @ aponta para o VPS (76.13.162.24) onde o Next.js roda via Coolify.
+; - www faz CNAME para o apex (redireciona/alia).
+; - app é alias do apex (subdomínio extra apontando pro mesmo IP).
+;
+; SOA e NS são gerenciados pelo provedor (Hostinger) — incluídos só por
+; conformidade RFC. O importador da Hostinger normalmente ignora SOA/NS
+; e usa os deles. Se a importação falhar, remova as linhas SOA e NS.
+
+$ORIGIN tdccursos.com.br.
+$TTL 300
+
+@       IN  SOA   ns1.dns-parking.com. hostmaster.tdccursos.com.br. (
+                  2026051101    ; serial (YYYYMMDDnn)
+                  3600          ; refresh (1h)
+                  600           ; retry   (10min)
+                  604800        ; expire  (1w)
+                  300 )         ; minimum TTL (5min)
+
+@       IN  NS    ns1.dns-parking.com.
+@       IN  NS    ns2.dns-parking.com.
+
+; --- Registros da aplicação ---
+
+@       IN  A     76.13.162.24
+www     IN  CNAME tdccursos.com.br.
+app     IN  A     76.13.162.24
