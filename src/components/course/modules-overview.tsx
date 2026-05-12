@@ -81,17 +81,19 @@ export function ModulesOverview() {
     <section className="relative">
       <TechBackdrop pattern="none" glow="top" />
       <div className="mx-auto max-w-content px-6 py-20 md:py-24">
-        <header className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
+        <header className="mx-auto max-w-3xl text-center md:mx-0 md:text-left">
           <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
             <span>▸</span>
-            CONTEUDO_DO_CURSO
+            ESTRUTURA_DO_PROGRAMA
           </span>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
-            7 módulos do fundamento à decisão estratégica
+          <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight md:text-4xl">
+            Sete módulos. Uma sequência de decisões.
           </h2>
-          <p className="mt-4 text-foreground-muted">
-            Da base conceitual do tributo dual à precificação do frete e à
-            documentação preventiva contra autuações.
+          <p className="mt-4 text-pretty text-foreground-muted md:text-lg">
+            Do fundamento conceitual do IBS/CBS até a precificação do frete e
+            o planejamento da transição. Cada módulo fecha um bloco de
+            decisões que a Reforma cobra do seu cliente — ou do seu caixa —
+            entre 2026 e 2033.
           </p>
         </header>
 
