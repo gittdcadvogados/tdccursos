@@ -33,7 +33,7 @@ export function DecisoesCriticas({
   return (
     <section className="relative">
       <div className={`mx-auto ${containerWidth} px-6 ${sectionPadding}`}>
-        <header className="mx-auto max-w-3xl">
+        <header className="mx-auto max-w-3xl text-center">
           <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
             <span>▸</span>
             DECISÕES_2026_2027
