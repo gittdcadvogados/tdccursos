@@ -7,6 +7,7 @@ import { signOut } from "../(auth)/actions";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { AppNav } from "@/components/sidebar/app-nav";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 function initials(name: string | null | undefined, email: string) {
   const source = (name?.trim() || email).trim();
@@ -71,6 +72,8 @@ export default async function AppLayout({
               )}
               <span className="text-sm text-foreground-muted">{display}</span>
             </Link>
+
+            <ThemeToggle />
 
             <form action={signOut}>
               <Button type="submit" variant="secondary" size="sm">

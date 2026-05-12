@@ -24,23 +24,36 @@
   --radius: 0.625rem;
 }
 
+/* Dark mode — paleta única reusada por OS preference E override manual */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #09090b;       /* zinc-950 */
+  :root:not([data-theme="light"]) {
+    --background: #09090b;
     --surface: #0f0f12;
-    --surface-muted: #18181b;    /* zinc-900 */
-    --foreground: #fafafa;       /* zinc-50 */
-    --foreground-muted: #a1a1aa; /* zinc-400 */
-    --border: #27272a;           /* zinc-800 */
-    --border-strong: #3f3f46;    /* zinc-700 */
-
-    --accent: #10b981;           /* emerald-500 — pop melhor no dark */
-    --accent-hover: #34d399;     /* emerald-400 */
-    --accent-soft: #022c22;      /* emerald-950 */
-    --accent-soft-fg: #6ee7b7;   /* emerald-300 */
-
+    --surface-muted: #18181b;
+    --foreground: #fafafa;
+    --foreground-muted: #a1a1aa;
+    --border: #27272a;
+    --border-strong: #3f3f46;
+    --accent: #10b981;
+    --accent-hover: #34d399;
+    --accent-soft: #022c22;
+    --accent-soft-fg: #6ee7b7;
     --ring: #10b981;
   }
+}
+:root[data-theme="dark"] {
+  --background: #09090b;
+  --surface: #0f0f12;
+  --surface-muted: #18181b;
+  --foreground: #fafafa;
+  --foreground-muted: #a1a1aa;
+  --border: #27272a;
+  --border-strong: #3f3f46;
+  --accent: #10b981;
+  --accent-hover: #34d399;
+  --accent-soft: #022c22;
+  --accent-soft-fg: #6ee7b7;
+  --ring: #10b981;
 }
 
 @theme inline {

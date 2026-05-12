@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import { buttonVariants } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { createClient } from "@/lib/supabase/server";
 
 const navItems = [
@@ -35,6 +36,7 @@ export async function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           {user ? (
             <Link href="/dashboard" className={buttonVariants({ size: "sm" })}>
               Meu curso
