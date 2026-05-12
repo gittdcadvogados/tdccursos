@@ -19,13 +19,13 @@ export default function HomePage() {
   return (
     <>
       <LandingHero />
-      <Testimonials />
       <LandingStats />
       <ModulesOverview />
       <DecisoesCriticas />
       <InstructorBio />
       <FaqSection />
       <FinalCta />
+      <Testimonials />
     </>
   );
 }
