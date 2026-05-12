@@ -119,7 +119,7 @@ export function ModulesOverview() {
                 </div>
 
                 {/* Imagem grande */}
-                <div className="relative aspect-video w-full overflow-hidden bg-surface-muted">
+                <div className="relative aspect-12/5 w-full overflow-hidden bg-surface-muted">
                   {m.image ? (
                     <Image
                       src={m.image}

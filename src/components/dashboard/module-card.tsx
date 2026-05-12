@@ -107,7 +107,7 @@ export function ModuleCard({
       {/* Imagem grande */}
       <Link
         href={`/modulo/${slug}`}
-        className="relative block aspect-video w-full overflow-hidden bg-surface-muted"
+        className="relative block aspect-12/5 w-full overflow-hidden bg-surface-muted"
       >
         {coverUrl ? (
           <Image
