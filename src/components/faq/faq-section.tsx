@@ -40,7 +40,7 @@ export function FaqSection() {
 
   return (
     <section className="mx-auto max-w-3xl px-6 py-20 md:py-24">
-      <header className="text-center">
+      <header className="text-center md:text-left">
         <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
           <span>▸</span>
           DÚVIDAS_FREQUENTES

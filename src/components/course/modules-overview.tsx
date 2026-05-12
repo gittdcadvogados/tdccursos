@@ -81,7 +81,7 @@ export function ModulesOverview() {
     <section className="relative">
       <TechBackdrop pattern="none" glow="top" />
       <div className="mx-auto max-w-content px-6 py-20 md:py-24">
-        <header className="mx-auto max-w-2xl text-center">
+        <header className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
           <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
             <span>▸</span>
             CONTEUDO_DO_CURSO
@@ -95,7 +95,7 @@ export function ModulesOverview() {
           </p>
         </header>
 
-        <div className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {modules.map((m) => {
             const mod = m.n.toString().padStart(2, "0");
             return (

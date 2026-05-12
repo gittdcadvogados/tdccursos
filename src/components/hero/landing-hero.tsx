@@ -42,7 +42,7 @@ export function LandingHero() {
       </div>
 
       <div className="mx-auto max-w-content px-6 py-20 md:py-28">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="mx-auto max-w-3xl text-center md:mx-0 md:text-left">
           <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-xs font-medium text-accent-soft-fg">
             <span className="tech-pulse h-1.5 w-1.5 rounded-full bg-accent" />
             <span className="tech-mono uppercase tracking-wider">
@@ -57,12 +57,12 @@ export function LandingHero() {
             <span className="text-accent">Adaptação Tributária</span>
           </h1>
 
-          <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-foreground-muted md:text-lg">
+          <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-foreground-muted md:mx-0 md:text-lg">
             IBS, CBS e ICMS aplicados à operação real, da incidência ao CT-e,
             do crédito ao planejamento da transição 2026–2033.
           </p>
 
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row md:items-start md:justify-start">
             <Link
               href="/cadastro"
               className={buttonVariants({ size: "lg" })}
@@ -79,10 +79,6 @@ export function LandingHero() {
             </Link>
           </div>
 
-          <p className="tech-mono mt-4 text-xs text-foreground-muted">
-            <span className="text-accent">▸</span> aula_inaugural · sem_cadastro
-            · 25min
-          </p>
         </div>
       </div>
     </section>

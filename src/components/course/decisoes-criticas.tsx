@@ -33,7 +33,7 @@ export function DecisoesCriticas({
   return (
     <section className="relative">
       <div className={`mx-auto ${containerWidth} px-6 ${sectionPadding}`}>
-        <header className="mx-auto max-w-3xl text-center">
+        <header className="mx-auto max-w-3xl text-center md:mx-0 md:text-left">
           <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
             <span>▸</span>
             DECISÕES_2026_2027
@@ -69,7 +69,7 @@ export function DecisoesCriticas({
 
         {!hideCtas && (
           <>
-            <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row md:items-start md:justify-start">
               <Link
                 href="/cadastro"
                 className={buttonVariants({ size: "lg" })}
@@ -84,7 +84,7 @@ export function DecisoesCriticas({
                 Ver grade completa
               </Link>
             </div>
-            <p className="tech-mono mt-4 text-center text-xs text-foreground-muted">
+            <p className="tech-mono mt-4 text-center text-xs text-foreground-muted md:text-left">
               <span className="text-accent">▸</span> módulo_07 · estratégia ·
               5_aulas · ao_vivo
             </p>

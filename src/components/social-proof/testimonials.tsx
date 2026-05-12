@@ -49,7 +49,7 @@ export function Testimonials() {
   return (
     <section className="relative border-y border-border bg-surface-muted/40">
       <div className="mx-auto max-w-content px-6 py-20 md:py-24">
-        <header className="mx-auto max-w-2xl text-center">
+        <header className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
           <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
             <span>▸</span>
             VALIDAÇÃO_TÉCNICA

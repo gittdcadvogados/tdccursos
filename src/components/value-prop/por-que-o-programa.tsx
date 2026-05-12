@@ -38,7 +38,7 @@ export function PorQueOPrograma() {
   return (
     <section className="relative border-y border-border bg-surface-muted/30">
       <div className="mx-auto max-w-content px-6 py-20 md:py-24">
-        <header className="mx-auto max-w-3xl text-center">
+        <header className="mx-auto max-w-3xl text-center md:mx-0 md:text-left">
           <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
             <span>▸</span>
             POR_QUE_O_PROGRAMA
@@ -121,7 +121,7 @@ export function PorQueOPrograma() {
         </ul>
 
         {/* CTAs */}
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row md:items-start md:justify-start">
           <Link href="/sobre" className={buttonVariants({ size: "lg" })}>
             Ver grade completa
             <ArrowRight />
