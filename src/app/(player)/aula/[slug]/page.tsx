@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
-  ChevronDown,
   Circle,
   Clock,
   FileText,
@@ -217,110 +216,92 @@ export default async function AulaPage(props: PageProps<"/aula/[slug]">) {
 
       {/* Main split: sidebar + content */}
       <div className="flex min-h-0 flex-1">
-        {/* Sidebar de módulos */}
+        {/* Sidebar com aulas do módulo atual */}
         <aside className="hidden w-80 shrink-0 border-r border-border bg-surface lg:flex lg:flex-col">
           <div className="border-b border-border px-4 py-3">
             <p className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-accent">
-              ▸ CURSO
+              ▸ MODULO_{lesson.modules.position.toString().padStart(2, "0")}
             </p>
             <p className="mt-0.5 truncate text-sm font-medium">
-              {lesson.modules.courses.title}
+              {lesson.modules.title.replace(/^M[oó]dulo\s+\d+\s*[—-]\s*/i, "")}
             </p>
-          </div>
-
-          <div className="flex-1 overflow-y-auto">
-            {(allModules ?? []).map((m) => {
-              const modLessons = m.lessons ?? [];
+            {(() => {
+              const currentModule = (allModules ?? []).find(
+                (m) => m.id === lesson.modules.id,
+              );
+              const modLessons = currentModule?.lessons ?? [];
               const modDone = modLessons.filter((l) =>
                 completedSet.has(l.id),
               ).length;
-              const isActiveModule = m.id === lesson.modules.id;
+              return (
+                <p className="tech-mono mt-1 text-[10px] uppercase tracking-wider text-foreground-muted">
+                  {modDone.toString().padStart(2, "0")} /{" "}
+                  {modLessons.length.toString().padStart(2, "0")} concluídas
+                </p>
+              );
+            })()}
+          </div>
+
+          <ul className="flex-1 overflow-y-auto">
+            {((allModules ?? []).find((m) => m.id === lesson.modules.id)
+              ?.lessons ?? []).map((l) => {
+              const active = l.id === lesson.id;
+              const done = completedSet.has(l.id);
+              const isOf = l.slug.startsWith("oficina");
+              const mins = l.duration_seconds
+                ? Math.round(l.duration_seconds / 60)
+                : null;
 
               return (
-                <details
-                  key={m.id}
-                  open={isActiveModule}
-                  className="group border-b border-border last:border-b-0"
-                >
-                  <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 transition hover:bg-surface-muted">
-                    <ChevronDown className="h-4 w-4 shrink-0 text-foreground-muted transition group-open:rotate-0 -rotate-90" />
-                    <div className="min-w-0 flex-1">
-                      <div className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-foreground-muted">
-                        MOD_{m.position.toString().padStart(2, "0")}
-                      </div>
-                      <div className="truncate text-sm font-medium">
-                        {m.title.replace(/^M[oó]dulo\s+\d+\s*[—-]\s*/i, "")}
-                      </div>
-                    </div>
-                    <span className="tech-mono shrink-0 text-[10px] font-semibold text-foreground-muted">
-                      {modDone.toString().padStart(2, "0")}/
-                      {modLessons.length.toString().padStart(2, "0")}
+                <li key={l.id}>
+                  <Link
+                    href={`/aula/${l.slug}`}
+                    className={cn(
+                      "flex items-start gap-3 border-l-2 px-4 py-2.5 text-sm transition",
+                      active
+                        ? "border-accent bg-accent-soft/60 text-foreground"
+                        : "border-transparent hover:bg-surface-muted",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "mt-0.5 shrink-0",
+                        done
+                          ? "text-accent"
+                          : active
+                            ? "text-accent"
+                            : "text-foreground-muted",
+                      )}
+                    >
+                      {done ? (
+                        <CheckCircle2 className="h-4 w-4" />
+                      ) : active ? (
+                        <PlayCircle className="h-4 w-4" />
+                      ) : (
+                        <Circle className="h-4 w-4" />
+                      )}
                     </span>
-                  </summary>
-
-                  <ul className="border-t border-border bg-background/40">
-                    {modLessons.map((l) => {
-                      const active = l.id === lesson.id;
-                      const done = completedSet.has(l.id);
-                      const isOf = l.slug.startsWith("oficina");
-                      const mins = l.duration_seconds
-                        ? Math.round(l.duration_seconds / 60)
-                        : null;
-
-                      return (
-                        <li key={l.id}>
-                          <Link
-                            href={`/aula/${l.slug}`}
-                            className={cn(
-                              "flex items-start gap-3 border-l-2 px-4 py-2.5 text-sm transition",
-                              active
-                                ? "border-accent bg-accent-soft/60 text-foreground"
-                                : "border-transparent hover:bg-surface-muted",
-                            )}
-                          >
-                            <span
-                              className={cn(
-                                "mt-0.5 shrink-0",
-                                done
-                                  ? "text-accent"
-                                  : active
-                                    ? "text-accent"
-                                    : "text-foreground-muted",
-                              )}
-                            >
-                              {done ? (
-                                <CheckCircle2 className="h-4 w-4" />
-                              ) : active ? (
-                                <PlayCircle className="h-4 w-4" />
-                              ) : (
-                                <Circle className="h-4 w-4" />
-                              )}
-                            </span>
-                            <div className="min-w-0 flex-1">
-                              <div className="tech-mono text-[9px] font-semibold uppercase tracking-wider text-foreground-muted">
-                                {isOf
-                                  ? `OFICINA_${l.slug.replace("oficina-", "").padStart(2, "0")}`
-                                  : `AULA_${l.position.toString().padStart(2, "0")}`}
-                              </div>
-                              <div className="truncate font-medium leading-snug">
-                                {l.title}
-                              </div>
-                              {mins !== null && (
-                                <div className="tech-mono mt-0.5 inline-flex items-center gap-1 text-[10px] text-foreground-muted">
-                                  <Clock className="h-2.5 w-2.5" />
-                                  {mins}min
-                                </div>
-                              )}
-                            </div>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </details>
+                    <div className="min-w-0 flex-1">
+                      <div className="tech-mono text-[9px] font-semibold uppercase tracking-wider text-foreground-muted">
+                        {isOf
+                          ? `OFICINA_${l.slug.replace("oficina-", "").padStart(2, "0")}`
+                          : `AULA_${l.position.toString().padStart(2, "0")}`}
+                      </div>
+                      <div className="truncate font-medium leading-snug">
+                        {l.title}
+                      </div>
+                      {mins !== null && (
+                        <div className="tech-mono mt-0.5 inline-flex items-center gap-1 text-[10px] text-foreground-muted">
+                          <Clock className="h-2.5 w-2.5" />
+                          {mins}min
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                </li>
               );
             })}
-          </div>
+          </ul>
         </aside>
 
         {/* Main content */}

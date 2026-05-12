@@ -18,6 +18,8 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { Progress } from "@/components/ui/progress";
 import { buttonVariants } from "@/components/ui/button";
+import { BunnyPlayer } from "@/components/bunny-player";
+import { signEmbedUrl } from "@/lib/bunny/client";
 import { cn } from "@/lib/utils";
 
 type LessonRow = {
@@ -109,6 +111,10 @@ export default async function ModuloPage(props: PageProps<"/modulo/[slug]">) {
 
   const moduleNumber = mod.position.toString().padStart(2, "0");
   const cleanTitle = mod.title.replace(/^M[oó]dulo\s+\d+\s*[—-]\s*/i, "").trim();
+
+  // Preview / boas-vindas do módulo (mesmo vídeo da aula inaugural por enquanto)
+  const previewGuid = process.env.BUNNY_AULA_INAUGURAL_VIDEO_GUID;
+  const previewSrc = previewGuid ? signEmbedUrl(previewGuid).src : null;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
@@ -271,30 +277,37 @@ export default async function ModuloPage(props: PageProps<"/modulo/[slug]">) {
         {/* Sidebar direito */}
         <aside className="lg:sticky lg:top-20 lg:self-start">
           <div className="overflow-hidden rounded-xl border border-border bg-surface">
-            {/* Thumbnail */}
-            <div className="relative aspect-video w-full overflow-hidden bg-surface-muted">
-              {mod.courses.cover_url ? (
-                <Image
-                  src={mod.courses.cover_url}
-                  alt={cleanTitle}
-                  fill
-                  sizes="320px"
-                  className="object-cover"
-                />
-              ) : (
-                <div className="absolute inset-0">
-                  <div className="bg-grid-fade absolute inset-0 text-border opacity-50" />
-                  <div
-                    aria-hidden
-                    className="glow-emerald absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 opacity-60"
+            {/* Player de preview do módulo */}
+            {previewSrc ? (
+              <BunnyPlayer
+                src={previewSrc}
+                title={`Prévia · ${cleanTitle}`}
+              />
+            ) : (
+              <div className="relative aspect-video w-full overflow-hidden bg-surface-muted">
+                {mod.courses.cover_url ? (
+                  <Image
+                    src={mod.courses.cover_url}
+                    alt={cleanTitle}
+                    fill
+                    sizes="320px"
+                    className="object-cover"
                   />
-                  <div className="tech-mono pointer-events-none absolute inset-0 flex items-center justify-center text-5xl font-bold tracking-tighter text-accent/15">
-                    MOD_{moduleNumber}
+                ) : (
+                  <div className="absolute inset-0">
+                    <div className="bg-grid-fade absolute inset-0 text-border opacity-50" />
+                    <div
+                      aria-hidden
+                      className="glow-emerald absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 opacity-60"
+                    />
+                    <div className="tech-mono pointer-events-none absolute inset-0 flex items-center justify-center text-5xl font-bold tracking-tighter text-accent/15">
+                      MOD_{moduleNumber}
+                    </div>
                   </div>
-                </div>
-              )}
-              <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
-            </div>
+                )}
+                <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
+              </div>
+            )}
 
             {/* CTA */}
             <div className="space-y-4 p-5">
