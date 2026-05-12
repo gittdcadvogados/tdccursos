@@ -59,7 +59,10 @@ export function LandingHero() {
 
           <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-foreground-muted md:mx-0 md:text-lg">
             IBS, CBS e ICMS aplicados à operação real, da incidência ao CT-e,
-            do crédito ao planejamento da transição 2026–2033.
+            do crédito ao planejamento da transição 2026–2033. São sete
+            módulos que vão do fundamento conceitual à decisão estratégica,
+            com aprofundamento no transporte rodoviário de cargas e de
+            passageiros.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row md:items-start md:justify-start">
