@@ -6,9 +6,9 @@ import { createClient } from "@/lib/supabase/server";
 
 async function getOrigin() {
   const h = await headers();
-  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
-  if (explicit) return explicit.replace(/\/$/, "");
   const host = h.get("host");
+  // Reverse proxies (Coolify/Traefik, Vercel) preenchem x-forwarded-proto.
+  // Em dev local, cai pra "http".
   const proto = h.get("x-forwarded-proto") ?? "http";
   return `${proto}://${host}`;
 }
