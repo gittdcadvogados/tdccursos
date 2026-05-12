@@ -71,7 +71,7 @@ export function ModuleCard({
               MOD_{mod}
             </span>
             <Link href={`/modulo/${slug}`}>
-              <h3 className="mt-1 text-xl font-semibold leading-tight tracking-tight transition hover:text-accent md:text-2xl">
+              <h3 className="mt-1 text-base font-semibold leading-tight tracking-tighter transition hover:text-accent md:text-lg">
                 {cleanTitle}
               </h3>
             </Link>

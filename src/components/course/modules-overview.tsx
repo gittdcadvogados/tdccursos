@@ -110,7 +110,7 @@ export function ModulesOverview() {
                       <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-accent">
                         MOD_{mod}
                       </span>
-                      <h3 className="mt-1 text-xl font-semibold leading-tight tracking-tight md:text-2xl">
+                      <h3 className="mt-1 text-base font-semibold leading-tight tracking-tighter md:text-lg">
                         {m.title}
                       </h3>
                     </div>
