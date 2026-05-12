@@ -38,9 +38,10 @@ export default function RootLayout({
         <ThemeScript />
       </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        <div className="mx-auto flex w-full max-w-shell flex-1 flex-col">
-          {children}
-        </div>
+        {/* Sem max-w global: cada seção decide o próprio container
+            (max-w-content nos blocos internos). Backgrounds full-bleed
+            agora se estendem em monitores ultrawide. */}
+        <div className="flex w-full flex-1 flex-col">{children}</div>
       </body>
     </html>
   );
