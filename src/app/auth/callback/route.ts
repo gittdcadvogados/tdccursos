@@ -1,10 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { getPublicOrigin } from "@/lib/public-origin";
 
 // Handler do redirect OAuth (Google, etc). Troca o `code` retornado
 // pelo provedor por uma sessão ativa via cookies do Supabase SSR.
 export async function GET(request: NextRequest) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
+  const origin = getPublicOrigin(request);
   const code = searchParams.get("code");
   const errorDesc = searchParams.get("error_description");
 

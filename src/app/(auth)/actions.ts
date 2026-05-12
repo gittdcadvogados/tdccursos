@@ -6,10 +6,11 @@ import { createClient } from "@/lib/supabase/server";
 
 async function getOrigin() {
   const h = await headers();
-  const host = h.get("host");
-  // Reverse proxies (Coolify/Traefik, Vercel) preenchem x-forwarded-proto.
-  // Em dev local, cai pra "http".
-  const proto = h.get("x-forwarded-proto") ?? "http";
+  // x-forwarded-host vem do reverse proxy com o domínio real (tdccursos.com.br),
+  // enquanto host pode trazer o hostname interno (localhost:3000) em containers.
+  const forwardedHost = h.get("x-forwarded-host");
+  const host = forwardedHost ?? h.get("host");
+  const proto = h.get("x-forwarded-proto") ?? (forwardedHost ? "https" : "http");
   return `${proto}://${host}`;
 }
 
