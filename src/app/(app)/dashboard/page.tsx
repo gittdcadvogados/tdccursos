@@ -308,7 +308,7 @@ export default async function DashboardPage() {
               </CardHeader>
 
               <CardContent>
-                <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                <div className="space-y-5">
                   {course.modules?.map((m) => (
                     <ModuleCard
                       key={m.id}
@@ -317,6 +317,7 @@ export default async function DashboardPage() {
                       title={m.title}
                       lessons={m.lessons ?? []}
                       completedLessonIds={completedLessonIds}
+                      coverUrl={course.cover_url}
                     />
                   ))}
                 </div>
