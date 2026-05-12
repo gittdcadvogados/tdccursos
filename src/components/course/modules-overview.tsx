@@ -116,13 +116,15 @@ export function ModulesOverview() {
     <section className="relative">
       <TechBackdrop pattern="none" glow="top" />
       <div className="mx-auto max-w-content px-6 py-20 md:py-24">
-        <header className="mx-auto max-w-3xl text-center md:mx-0 md:text-left">
+        <FiscalRouteHud />
+
+        <header className="mx-auto mt-12 max-w-3xl text-center md:mx-0 md:mt-16 md:text-left">
           <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-            <span>▸</span>
-            CONTEUDO_DO_PROGRAMA
+            <span>{">"}</span>
+            Da_regra_ao_caixa
           </span>
           <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight md:text-4xl">
-            Da regra ao caixa, em sete módulos
+            Conteúdos sobre o PAT
           </h2>
           <p className="mt-4 text-pretty text-foreground-muted md:text-lg">
             A grade cobre a LC 214/2025 e o SINIEF 24/2024 na prática, da
@@ -131,10 +133,6 @@ export function ModulesOverview() {
             contra autuação.
           </p>
         </header>
-
-        <div className="mt-10 md:mt-12">
-          <FiscalRouteHud />
-        </div>
 
         <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {modules.map((m) => {

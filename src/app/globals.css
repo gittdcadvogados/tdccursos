@@ -56,6 +56,21 @@
   --ring: #10b981;
 }
 
+/* Zona forçada em paleta escura — escopo local sem mexer no tema global.
+   Útil em seções com vídeo/imagem escura como bg, que precisam de tokens
+   escuros independente do modo claro/escuro do site. */
+.dark-zone {
+  --background: #09090b;
+  --surface: #0f0f12;
+  --surface-muted: #18181b;
+  --foreground: #fafafa;
+  --foreground-muted: #a1a1aa;
+  --border: #27272a;
+  --border-strong: #3f3f46;
+  --accent-soft: #022c22;
+  --accent-soft-fg: #6ee7b7;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);

@@ -18,8 +18,8 @@ const tickerItems = [
 
 export function LandingHero() {
   return (
-    <section className="relative isolate overflow-hidden bg-zinc-950 text-zinc-50 [--foreground:var(--color-zinc-50)] [--foreground-muted:var(--color-zinc-400)]">
-      {/* Vídeo de fundo (MP4 local auto-hospedado, 1MB) */}
+    <section className="dark-zone relative isolate overflow-hidden bg-zinc-950 text-zinc-50">
+      {/* Vídeo de fundo (MP4 local auto-hospedado, 1MB) — blur + scale pra esconder bordas borradas */}
       <video
         aria-hidden
         autoPlay
@@ -35,12 +35,12 @@ export function LandingHero() {
       {/* Lente escura por cima */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-20 bg-zinc-950/65"
+        className="pointer-events-none absolute inset-0 -z-20 bg-zinc-950/85"
       />
       {/* Vinheta — escurece bordas pra dar foco ao centro */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-20 bg-radial-[ellipse_at_center] from-transparent via-zinc-950/30 to-zinc-950/80"
+        className="pointer-events-none absolute inset-0 -z-20 bg-radial-[ellipse_at_center] from-zinc-950/40 via-zinc-950/75 to-zinc-950"
       />
       <TechBackdrop pattern="grid-fade" glow="center" />
 
@@ -66,7 +66,7 @@ export function LandingHero() {
       </div>
 
       <div className="mx-auto max-w-content px-6 py-20 md:py-28">
-        <div className="mx-auto max-w-3xl text-center md:mx-0 md:text-left">
+        <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-xs font-medium text-accent-soft-fg">
             <span className="tech-pulse h-1.5 w-1.5 rounded-full bg-accent" />
             <span className="tech-mono uppercase tracking-wider">
@@ -81,11 +81,11 @@ export function LandingHero() {
             <span className="text-accent">Adaptação Tributária</span>
           </h1>
 
-          <p className="tech-mono mt-3 text-center text-[11px] uppercase tracking-[0.18em] text-foreground-muted md:text-left">
+          <p className="tech-mono mt-3 text-center text-[11px] uppercase tracking-[0.18em] text-foreground-muted">
             ▸ Programa de Adaptação Tributária — <span className="text-accent">PAT TDC</span>
           </p>
 
-          <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-foreground-muted md:mx-0 md:text-lg">
+          <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-foreground-muted md:text-lg">
             IBS, CBS e ICMS aplicados à operação real, da incidência ao CT-e,
             do crédito ao planejamento da transição 2026–2033. São sete
             módulos que vão do fundamento conceitual à decisão estratégica,
@@ -93,7 +93,7 @@ export function LandingHero() {
             passageiros.
           </p>
 
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row md:items-start md:justify-start">
+          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/cadastro"
               className={buttonVariants({ size: "lg" })}
@@ -111,7 +111,7 @@ export function LandingHero() {
           </div>
 
           {/* Terminal log — system status tease */}
-          <div className="mx-auto mt-8 w-full max-w-md md:mx-0 md:max-w-lg">
+          <div className="mx-auto mt-8 w-full max-w-md md:max-w-lg">
             <TerminalLog />
           </div>
         </div>
