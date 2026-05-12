@@ -104,24 +104,22 @@ export function ModulesOverview() {
                 className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition hover:border-accent/40 hover:shadow-[0_8px_24px_-12px_rgba(16,185,129,0.25)]"
               >
                 {/* Header */}
-                <div className="border-b border-border bg-surface-muted/40 px-5 py-4 md:px-6 md:py-5">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0 flex-1">
-                      <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-accent">
-                        MOD_{mod}
-                      </span>
-                      <h3 className="mt-1 text-base font-semibold leading-tight tracking-tighter md:text-lg">
-                        {m.title}
-                      </h3>
-                    </div>
-                    <span className="tech-mono shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-foreground-muted">
+                <div className="border-b border-border bg-surface-muted/40 px-5 py-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-accent">
+                      MOD_{mod}
+                    </span>
+                    <span className="tech-mono shrink-0 inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-soft px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-accent-soft-fg">
                       <BookOpen className="h-3 w-3" />
                       {m.lessons.toString().padStart(2, "0")} aulas
-                      <span className="text-border">·</span>
+                      <span className="opacity-40">·</span>
                       <Clock className="h-2.5 w-2.5" />
                       {m.duration}
                     </span>
                   </div>
+                  <h3 className="mt-2 text-base font-bold leading-tight tracking-tighter text-foreground md:text-lg">
+                    {m.title}
+                  </h3>
                 </div>
 
                 {/* Imagem */}
