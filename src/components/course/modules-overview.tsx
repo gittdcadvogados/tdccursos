@@ -122,13 +122,13 @@ export function ModulesOverview() {
             CONTEUDO_DO_PROGRAMA
           </span>
           <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight md:text-4xl">
-            Do regulamento ao caixa, em sete módulos
+            Da regra ao caixa, em sete módulos
           </h2>
           <p className="mt-4 text-pretty text-foreground-muted md:text-lg">
-            A formação parte da arquitetura constitucional do IBS e da CBS,
-            percorre a aplicação prática nas operações de transporte, créditos
-            e obrigações acessórias, e chega às decisões de planejamento que
-            definem o resultado da empresa na transição.
+            A grade cobre a LC 214/2025 e o SINIEF 24/2024 na prática, da
+            incidência sobre o frete ao preenchimento do CT-e, da gestão do
+            crédito acumulado de ICMS à precificação e à blindagem jurídica
+            contra autuação.
           </p>
         </header>
 

@@ -2,13 +2,37 @@ import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 
-const BULLETS = [
-  "Comparar Lucro Real, Presumido e Simples para transportadoras à luz da Reforma — critérios e simulação",
-  "Decidir pela adesão ao Simples Híbrido até setembro/2026 com base em cálculo de impacto",
-  "Calcular o aumento de carga tributária no frete e estruturar o repasse contratual antes da renegociação",
-  "Mapear a exposição ao split payment e preparar o capital de giro com 12 meses de antecedência",
-  "Avaliar a continuidade dos benefícios de ICMS no Centro-Oeste e o crédito outorgado do TRC em Mato Grosso",
-  "Construir documentação preventiva para o conflito do ICMS na base do IBS/CBS em 2027",
+type Capacidade = {
+  title: string;
+  description: string;
+};
+
+const CAPACIDADES: Capacidade[] = [
+  {
+    title: "Comparar regimes tributários no novo cenário.",
+    description:
+      "Simulação técnica entre Lucro Real, Presumido, Simples e Simples Híbrido, com critérios objetivos para a decisão de setembro de 2026.",
+  },
+  {
+    title: "Estruturar repasse contratual da carga tributária.",
+    description:
+      "Cálculo do impacto da Reforma no preço cobrado, com modelo de cláusula de revisão e roteiro de renegociação com clientes.",
+  },
+  {
+    title: "Preparar o caixa para o split payment.",
+    description:
+      "Mapeamento da exposição da empresa ao split, com plano de adequação do capital de giro nos doze meses anteriores à entrada em vigor.",
+  },
+  {
+    title: "Habilitar e gerir o crédito acumulado de ICMS.",
+    description:
+      "Processo de habilitação dentro do prazo de 2028, com gestão do ressarcimento em 20 anos corrigido pelo IPCA.",
+  },
+  {
+    title: "Documentar a operação contra o conflito de 2027.",
+    description:
+      "Construção da prova documental que sustenta a posição da empresa em caso de autuação sobre o ICMS na base do IBS e da CBS.",
+  },
 ];
 
 type Props = {
@@ -42,67 +66,60 @@ export function DecisoesCriticas({
             : "mx-auto max-w-3xl text-center md:mx-0 md:text-left"
         }
       >
-        <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+        <span className="inline-flex items-center gap-2 text-sm font-medium text-accent">
           <span>▸</span>
-          DECISÕES_2026_2027
+          Da norma à decisão, na operação real
         </span>
-        <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight md:text-4xl">
-          As decisões críticas da transição que você vai dominar
+        <h2 className="tech-mono mt-3 text-balance text-2xl font-bold uppercase tracking-tight text-foreground md:text-4xl">
+          O_QUE_VOCE_SAI_FAZENDO
         </h2>
         <p className="mt-4 text-pretty text-foreground-muted md:text-lg">
-          Setembro/2026 marca a opção pelo Simples Híbrido; 2027 inicia o
-          split payment. Cada escolha aqui define a carga tributária da
-          transportadora pelos próximos sete anos.
+          O programa não para na explicação da lei. Cada módulo termina em uma
+          capacidade técnica que o profissional aplica na rotina da empresa ou
+          do escritório, antes que cada prazo da transição vire problema.
         </p>
       </header>
 
       <ul
         className={
           withVisual
-            ? "mt-10 grid gap-3 md:gap-4"
-            : "mt-10 grid gap-3 md:grid-cols-2 md:gap-4"
+            ? "mt-10 grid gap-4"
+            : "mt-10 grid gap-4 md:grid-cols-2"
         }
       >
-        {BULLETS.map((b, idx) => (
+        {CAPACIDADES.map((c, idx) => (
           <li
             key={idx}
-            className="flex items-start gap-3 rounded-xl border border-border bg-surface p-4 md:p-5"
+            className="flex items-start gap-4 rounded-xl border border-border bg-surface p-5 md:p-6"
           >
             <span
-              className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-accent-soft text-accent-soft-fg"
+              className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-accent text-white"
               aria-hidden
             >
-              <Check className="h-3.5 w-3.5" />
+              <Check className="h-4 w-4" />
             </span>
-            <p className="text-sm leading-snug text-foreground md:text-base">
-              {b}
-            </p>
+            <div className="min-w-0 flex-1">
+              <h3 className="text-[15px] font-semibold leading-snug text-foreground md:text-base">
+                {c.title}
+              </h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-foreground-muted md:text-[15px]">
+                {c.description}
+              </p>
+            </div>
           </li>
         ))}
       </ul>
 
       {!hideCtas && (
-        <>
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row md:items-start md:justify-start">
-            <Link
-              href="/cadastro"
-              className={buttonVariants({ size: "lg" })}
-            >
-              Inscrever-se no curso
-              <ArrowRight />
-            </Link>
-            <Link
-              href="/sobre"
-              className={buttonVariants({ variant: "secondary", size: "lg" })}
-            >
-              Ver grade completa
-            </Link>
-          </div>
-          <p className="tech-mono mt-4 text-center text-xs text-foreground-muted md:text-left">
-            <span className="text-accent">▸</span> módulo_07 · estratégia ·
-            5_aulas · ao_vivo
-          </p>
-        </>
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row md:items-start md:justify-start">
+          <Link
+            href="/cadastro"
+            className={buttonVariants({ size: "lg" })}
+          >
+            Se inscrever
+            <ArrowRight />
+          </Link>
+        </div>
       )}
     </>
   );
@@ -131,7 +148,7 @@ export function DecisoesCriticas({
                       ▸ GIF_PENDENTE
                     </span>
                     <span className="tech-mono mt-2 block text-[9px] uppercase tracking-wider text-foreground-muted opacity-50">
-                      decisões_2026_2027.gif
+                      capacidades_pat.gif
                     </span>
                   </div>
                 </div>
