@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LandingHero } from "@/components/hero/landing-hero";
+import { PorQueOPrograma } from "@/components/value-prop/por-que-o-programa";
 import { Testimonials } from "@/components/social-proof/testimonials";
 import { LandingStats } from "@/components/dashboard/stat-grid";
 import { ModulesOverview } from "@/components/course/modules-overview";
@@ -19,6 +20,7 @@ export default function HomePage() {
   return (
     <>
       <LandingHero />
+      <PorQueOPrograma />
       <LandingStats />
       <ModulesOverview />
       <DecisoesCriticas />
