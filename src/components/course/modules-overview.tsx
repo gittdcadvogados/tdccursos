@@ -77,13 +77,16 @@ const modules: ModuleEntry[] = [
   },
 ];
 
+/** Arredonda pra evitar qualquer divergência de FP entre SSR/CSR. */
+const r2 = (n: number) => Math.round(n * 100) / 100;
+
 function Sparkline({ seed }: { seed: number }) {
   const bars = Array.from({ length: 16 }, (_, i) => {
     const v =
       (Math.sin(seed * 1.7 + i * 0.85) + Math.cos(seed * 0.9 + i * 1.3)) *
         0.25 +
       0.5;
-    return Math.max(0.2, Math.min(1, v));
+    return r2(Math.max(0.2, Math.min(1, v)));
   });
   return (
     <svg
@@ -93,17 +96,17 @@ function Sparkline({ seed }: { seed: number }) {
       aria-hidden="true"
     >
       {bars.map((v, i) => {
-        const h = v * 12;
+        const h = r2(v * 12);
         return (
           <rect
             key={i}
             x={i * 5}
-            y={13 - h}
+            y={r2(13 - h)}
             width="3"
             height={h}
             rx="0.5"
             fill="var(--accent)"
-            opacity={0.35 + v * 0.55}
+            opacity={r2(0.35 + v * 0.55)}
           />
         );
       })}

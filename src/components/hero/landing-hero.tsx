@@ -66,52 +66,55 @@ export function LandingHero() {
       </div>
 
       <div className="mx-auto max-w-content px-6 py-20 md:py-28">
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-xs font-medium text-accent-soft-fg">
-            <span className="tech-pulse h-1.5 w-1.5 rounded-full bg-accent" />
-            <span className="tech-mono uppercase tracking-wider">
-              PAT_2026
+        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
+          {/* Coluna 1 — info principal */}
+          <div className="text-left">
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-xs font-medium text-accent-soft-fg">
+              <span className="tech-pulse h-1.5 w-1.5 rounded-full bg-accent" />
+              <span className="tech-mono uppercase tracking-wider">
+                PAT_2026
+              </span>
+              <span className="opacity-60">·</span>
+              <span>Programa de Adaptação Tributária</span>
             </span>
-            <span className="opacity-60">·</span>
-            <span>Programa de Adaptação Tributária</span>
-          </span>
 
-          <h1 className="mt-6 text-balance text-4xl font-semibold tracking-tight md:text-6xl">
-            Programa de{" "}
-            <span className="text-accent">Adaptação Tributária</span>
-          </h1>
+            <h1 className="mt-6 text-balance text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">
+              Programa de{" "}
+              <span className="text-accent">Adaptação Tributária</span>
+            </h1>
 
-          <p className="tech-mono mt-3 text-center text-[11px] uppercase tracking-[0.18em] text-foreground-muted">
-            ▸ Programa de Adaptação Tributária — <span className="text-accent">PAT TDC</span>
-          </p>
+            <p className="tech-mono mt-3 text-[11px] uppercase tracking-[0.18em] text-foreground-muted">
+              ▸ Programa de Adaptação Tributária — <span className="text-accent">PAT TDC</span>
+            </p>
 
-          <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-foreground-muted md:text-lg">
-            IBS, CBS e ICMS aplicados à operação real, da incidência ao CT-e,
-            do crédito ao planejamento da transição 2026–2033. São sete
-            módulos que vão do fundamento conceitual à decisão estratégica,
-            com aprofundamento no transporte rodoviário de cargas e de
-            passageiros.
-          </p>
+            <p className="mt-5 max-w-2xl text-pretty text-base text-foreground-muted md:text-lg">
+              IBS, CBS e ICMS aplicados à operação real, da incidência ao
+              CT-e, do crédito ao planejamento da transição 2026–2033. São
+              sete módulos que vão do fundamento conceitual à decisão
+              estratégica, com aprofundamento no transporte rodoviário de
+              cargas e de passageiros.
+            </p>
 
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              href="/cadastro"
-              className={buttonVariants({ size: "lg" })}
-            >
-              Inscrever-se no programa
-              <ArrowRight />
-            </Link>
-            <Link
-              href="/aula-inaugural"
-              className={buttonVariants({ variant: "secondary", size: "lg" })}
-            >
-              <PlayCircle />
-              Assistir aula gratuita
-            </Link>
+            <div className="mt-9 flex flex-col items-start gap-3 sm:flex-row">
+              <Link
+                href="/cadastro"
+                className={buttonVariants({ size: "lg" })}
+              >
+                Inscrever-se no programa
+                <ArrowRight />
+              </Link>
+              <Link
+                href="/aula-inaugural"
+                className={buttonVariants({ variant: "secondary", size: "lg" })}
+              >
+                <PlayCircle />
+                Assistir aula gratuita
+              </Link>
+            </div>
           </div>
 
-          {/* Terminal log — system status tease */}
-          <div className="mx-auto mt-8 w-full max-w-md md:max-w-lg">
+          {/* Coluna 2 — TerminalLog */}
+          <div className="w-full">
             <TerminalLog />
           </div>
         </div>
