@@ -25,6 +25,8 @@ type Props = {
   lessons: LessonPreview[];
   completedLessonIds: Set<string>;
   coverUrl?: string | null;
+  /** Mostra a lista de aulas dentro do card. Default true. */
+  showLessons?: boolean;
 };
 
 function stripModulePrefix(title: string) {
@@ -46,6 +48,7 @@ export function ModuleCard({
   lessons,
   completedLessonIds,
   coverUrl,
+  showLessons = true,
 }: Props) {
   const lessonsTotal = lessons.length;
   const lessonsDone = lessons.filter((l) => completedLessonIds.has(l.id)).length;
@@ -153,7 +156,7 @@ export function ModuleCard({
       </Link>
 
       {/* Lista de aulas */}
-      {lessonsTotal > 0 && (
+      {showLessons && lessonsTotal > 0 && (
         <ul className="divide-y divide-border">
           {lessons.map((l) => {
             const done = completedLessonIds.has(l.id);

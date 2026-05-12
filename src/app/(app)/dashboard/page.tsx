@@ -16,6 +16,8 @@ import { Progress } from "@/components/ui/progress";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { ProfileBanner } from "@/components/dashboard/profile-banner";
 import { ModuleCard } from "@/components/dashboard/module-card";
+import { BunnyPlayer } from "@/components/bunny-player";
+import { signEmbedUrl } from "@/lib/bunny/client";
 import { buttonVariants } from "@/components/ui/button";
 
 type LessonLite = {
@@ -271,6 +273,40 @@ export default async function DashboardPage() {
       {/* Cursos */}
       <section className="space-y-6">
         <h2 className="text-lg font-semibold tracking-tight">Seus cursos</h2>
+
+        {/* Aula experimental — vídeo de boas-vindas */}
+        {(() => {
+          const guid = process.env.BUNNY_AULA_INAUGURAL_VIDEO_GUID;
+          if (!guid) return null;
+          const signed = signEmbedUrl(guid);
+          return (
+            <Card className="overflow-hidden">
+              <CardHeader>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-accent">
+                      ▸ AULA_EXPERIMENTAL
+                    </span>
+                    <CardTitle className="mt-1">
+                      Conheça a plataforma
+                    </CardTitle>
+                    <p className="mt-1 text-sm text-foreground-muted">
+                      Apresentação em vídeo do curso e do que esperar dos
+                      próximos módulos.
+                    </p>
+                  </div>
+                  <span className="tech-mono shrink-0 rounded-full border border-accent/20 bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent-soft-fg">
+                    Grátis
+                  </span>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <BunnyPlayer src={signed.src} title="Aula experimental" />
+              </CardContent>
+            </Card>
+          );
+        })()}
+
         {courses.map((course) => {
           const total = totalsByCourse.get(course.id) ?? 0;
           const done = completedByCourse.get(course.id) ?? 0;
@@ -308,7 +344,7 @@ export default async function DashboardPage() {
               </CardHeader>
 
               <CardContent>
-                <div className="space-y-5">
+                <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
                   {course.modules?.map((m) => (
                     <ModuleCard
                       key={m.id}
@@ -318,6 +354,7 @@ export default async function DashboardPage() {
                       lessons={m.lessons ?? []}
                       completedLessonIds={completedLessonIds}
                       coverUrl={course.cover_url}
+                      showLessons={false}
                     />
                   ))}
                 </div>
