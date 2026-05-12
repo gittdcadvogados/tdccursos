@@ -46,22 +46,20 @@ export function LandingHero() {
           <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-xs font-medium text-accent-soft-fg">
             <span className="tech-pulse h-1.5 w-1.5 rounded-full bg-accent" />
             <span className="tech-mono uppercase tracking-wider">
-              Curso completo
+              PAT_2026
             </span>
             <span className="opacity-60">·</span>
-            <span>Reforma Tributária 2026–2033</span>
+            <span>Programa de Adaptação Tributária</span>
           </span>
 
           <h1 className="mt-6 text-balance text-4xl font-semibold tracking-tight md:text-6xl">
-            Tributação do Transporte Rodoviário na{" "}
-            <span className="text-accent">Reforma Tributária</span>
+            Programa de{" "}
+            <span className="text-accent">Adaptação Tributária</span>
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-foreground-muted md:text-lg">
-            IBS, CBS e ICMS aplicados ao transporte de cargas e passageiros —
-            da incidência ao CT-e, do crédito ao planejamento da transição
-            2026–2033. Com Rafael Vieira, fiscal de tributos estaduais
-            licenciado.
+            IBS, CBS e ICMS aplicados à operação real, da incidência ao CT-e,
+            do crédito ao planejamento da transição 2026–2033.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -69,7 +67,7 @@ export function LandingHero() {
               href="/cadastro"
               className={buttonVariants({ size: "lg" })}
             >
-              Inscrever-se no curso
+              Inscrever-se no programa
               <ArrowRight />
             </Link>
             <Link
