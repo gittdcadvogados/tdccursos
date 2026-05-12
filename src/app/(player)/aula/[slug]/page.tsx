@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
-  ArrowRight,
   CheckCircle2,
   Circle,
   Clock,
@@ -14,15 +13,14 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { BunnyPlayer } from "@/components/bunny-player";
 import { signEmbedUrl } from "@/lib/bunny/client";
-import { buttonVariants } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { LessonNotes } from "@/components/aula/lesson-notes";
 import {
   LessonComments,
   type CommentItem,
 } from "@/components/aula/lesson-comments";
+import { LessonControls } from "@/components/aula/lesson-controls";
 import { cn } from "@/lib/utils";
-import { markLessonCompleted } from "../actions";
 
 type LessonLite = {
   id: string;
@@ -141,7 +139,6 @@ export default async function AulaPage(props: PageProps<"/aula/[slug]">) {
     })),
   );
   const currentIdx = flatLessons.findIndex((l) => l.id === lesson.id);
-  const prev = currentIdx > 0 ? flatLessons[currentIdx - 1] : null;
   const next =
     currentIdx >= 0 && currentIdx < flatLessons.length - 1
       ? flatLessons[currentIdx + 1]
@@ -307,32 +304,41 @@ export default async function AulaPage(props: PageProps<"/aula/[slug]">) {
         {/* Main content */}
         <main className="min-w-0 flex-1 overflow-y-auto">
           <div className="mx-auto max-w-4xl space-y-6 px-4 py-6 md:px-8 md:py-10">
-            {/* Player */}
-            {signedSrc ? (
-              <BunnyPlayer src={signedSrc} title={lesson.title} />
-            ) : (
-              <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-dashed border-border bg-surface-muted">
-                <div
-                  aria-hidden
-                  className="bg-grid-tight pointer-events-none absolute inset-0 text-border opacity-40"
-                />
-                <div
-                  aria-hidden
-                  className="glow-emerald pointer-events-none absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 opacity-50"
-                />
-                <div className="relative flex h-full flex-col items-center justify-center gap-3 p-8 text-center">
-                  <Sparkles className="h-8 w-8 text-foreground-muted" />
-                  <div>
-                    <p className="text-sm font-medium">
-                      Vídeo desta aula em produção
-                    </p>
-                    <p className="tech-mono mt-1 text-[11px] text-foreground-muted">
-                      bunny_library_id · bunny_video_guid pendentes
-                    </p>
+            {/* Player + barra de ações abaixo (cliente) */}
+            <LessonControls
+              lessonId={lesson.id}
+              lessonSlug={lesson.slug}
+              isCompleted={isCompleted}
+              nextLesson={
+                next ? { slug: next.slug, title: next.title } : null
+              }
+            >
+              {signedSrc ? (
+                <BunnyPlayer src={signedSrc} title={lesson.title} />
+              ) : (
+                <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-dashed border-border bg-surface-muted">
+                  <div
+                    aria-hidden
+                    className="bg-grid-tight pointer-events-none absolute inset-0 text-border opacity-40"
+                  />
+                  <div
+                    aria-hidden
+                    className="glow-emerald pointer-events-none absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 opacity-50"
+                  />
+                  <div className="relative flex h-full flex-col items-center justify-center gap-3 p-8 text-center">
+                    <Sparkles className="h-8 w-8 text-foreground-muted" />
+                    <div>
+                      <p className="text-sm font-medium">
+                        Vídeo desta aula em produção
+                      </p>
+                      <p className="tech-mono mt-1 text-[11px] text-foreground-muted">
+                        bunny_library_id · bunny_video_guid pendentes
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </LessonControls>
 
             {/* Título + meta */}
             <div className="space-y-2">
@@ -395,86 +401,6 @@ export default async function AulaPage(props: PageProps<"/aula/[slug]">) {
               currentUserId={user!.id}
             />
 
-            {/* Prev / Mark / Next */}
-            <div className="flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-              {prev ? (
-                <Link
-                  href={`/aula/${prev.slug}`}
-                  className={cn(
-                    buttonVariants({ variant: "secondary", size: "md" }),
-                    "justify-start",
-                  )}
-                  title={prev.title}
-                >
-                  <ArrowLeft />
-                  <div className="flex flex-col items-start text-left leading-tight">
-                    <span className="tech-mono text-[9px] uppercase tracking-wider opacity-70">
-                      Anterior
-                    </span>
-                    <span className="max-w-[180px] truncate text-xs">
-                      {prev.title}
-                    </span>
-                  </div>
-                </Link>
-              ) : (
-                <div />
-              )}
-
-              <div className="flex items-center gap-2">
-                {!isCompleted && (
-                  <form action={markLessonCompleted}>
-                    <input type="hidden" name="lesson_id" value={lesson.id} />
-                    <input
-                      type="hidden"
-                      name="lesson_slug"
-                      value={lesson.slug}
-                    />
-                    <button
-                      type="submit"
-                      className={buttonVariants({ size: "md" })}
-                    >
-                      <CheckCircle2 />
-                      Marcar concluída
-                    </button>
-                  </form>
-                )}
-
-                {next ? (
-                  <Link
-                    href={`/aula/${next.slug}`}
-                    className={cn(
-                      buttonVariants({
-                        variant: isCompleted ? "primary" : "secondary",
-                        size: "md",
-                      }),
-                      "justify-end",
-                    )}
-                    title={next.title}
-                  >
-                    <div className="flex flex-col items-end text-right leading-tight">
-                      <span className="tech-mono text-[9px] uppercase tracking-wider opacity-70">
-                        Próxima
-                      </span>
-                      <span className="max-w-[180px] truncate text-xs">
-                        {next.title}
-                      </span>
-                    </div>
-                    <ArrowRight />
-                  </Link>
-                ) : (
-                  <Link
-                    href={`/modulo/${lesson.modules.slug}`}
-                    className={buttonVariants({
-                      variant: "secondary",
-                      size: "md",
-                    })}
-                  >
-                    Voltar ao módulo
-                    <ArrowRight />
-                  </Link>
-                )}
-              </div>
-            </div>
           </div>
         </main>
       </div>
