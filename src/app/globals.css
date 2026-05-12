@@ -192,6 +192,17 @@ body {
   animation: tech-marquee 28s linear infinite;
 }
 
+/* Fluxo contínuo de dashes em path SVG (rota fiscal/mapa HUD) */
+@keyframes route-flow {
+  to { stroke-dashoffset: -32; }
+}
+.route-flow {
+  animation: route-flow 1.6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-flow { animation: none; }
+}
+
 /* Badge mono — números/labels estilo terminal */
 .tech-mono {
   font-family: var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;

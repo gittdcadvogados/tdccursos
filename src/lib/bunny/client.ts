@@ -44,7 +44,13 @@ export type SignedEmbed = {
 export function signEmbedUrl(
   videoGuid: string,
   expiresInSeconds = 6 * 60 * 60, // 6h default
-  opts: { libraryIdOverride?: string; autoplay?: boolean } = {},
+  opts: {
+    libraryIdOverride?: string;
+    autoplay?: boolean;
+    loop?: boolean;
+    muted?: boolean;
+    preload?: boolean;
+  } = {},
 ): SignedEmbed {
   const libId = opts.libraryIdOverride ?? libraryId();
   const expires = Math.floor(Date.now() / 1000) + expiresInSeconds;
@@ -56,8 +62,10 @@ export function signEmbedUrl(
     token,
     expires: String(expires),
     autoplay: opts.autoplay ? "true" : "false",
-    preload: "true",
+    preload: opts.preload === false ? "false" : "true",
   });
+  if (opts.loop !== undefined) qs.set("loop", opts.loop ? "true" : "false");
+  if (opts.muted !== undefined) qs.set("muted", opts.muted ? "true" : "false");
 
   return {
     src: `${IFRAME_BASE}/embed/${libId}/${videoGuid}?${qs.toString()}`,

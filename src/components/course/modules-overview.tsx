@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, BookOpen, Clock, PlayCircle } from "lucide-react";
 import { TechBackdrop } from "@/components/ui/tech-backdrop";
+import { FiscalRouteHud } from "@/components/course/fiscal-route-hud";
 
 type ModuleEntry = {
   n: number;
@@ -76,6 +77,40 @@ const modules: ModuleEntry[] = [
   },
 ];
 
+function Sparkline({ seed }: { seed: number }) {
+  const bars = Array.from({ length: 16 }, (_, i) => {
+    const v =
+      (Math.sin(seed * 1.7 + i * 0.85) + Math.cos(seed * 0.9 + i * 1.3)) *
+        0.25 +
+      0.5;
+    return Math.max(0.2, Math.min(1, v));
+  });
+  return (
+    <svg
+      viewBox="0 0 80 14"
+      preserveAspectRatio="none"
+      className="h-3.5 w-20"
+      aria-hidden="true"
+    >
+      {bars.map((v, i) => {
+        const h = v * 12;
+        return (
+          <rect
+            key={i}
+            x={i * 5}
+            y={13 - h}
+            width="3"
+            height={h}
+            rx="0.5"
+            fill="var(--accent)"
+            opacity={0.35 + v * 0.55}
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
 export function ModulesOverview() {
   return (
     <section className="relative">
@@ -97,7 +132,11 @@ export function ModulesOverview() {
           </p>
         </header>
 
-        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 md:mt-12">
+          <FiscalRouteHud />
+        </div>
+
+        <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {modules.map((m) => {
             const mod = m.n.toString().padStart(2, "0");
             return (
@@ -122,6 +161,12 @@ export function ModulesOverview() {
                   <h3 className="mt-2 text-base font-bold leading-tight tracking-tighter text-foreground md:text-lg">
                     {m.title}
                   </h3>
+                  <div className="mt-3 flex items-center justify-between gap-3 border-t border-border/40 pt-2.5">
+                    <span className="tech-mono text-[9px] font-semibold uppercase tracking-wider text-foreground-muted opacity-70">
+                      ▸ carga_módulo
+                    </span>
+                    <Sparkline seed={m.n} />
+                  </div>
                 </div>
 
                 {/* Imagem */}

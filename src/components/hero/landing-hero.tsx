@@ -2,6 +2,25 @@ import Link from "next/link";
 import { ArrowRight, PlayCircle } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { TechBackdrop } from "@/components/ui/tech-backdrop";
+import { TerminalLog } from "@/components/ui/terminal-log";
+import { HeroBgVideo } from "@/components/hero/hero-bg-video";
+import { signEmbedUrl } from "@/lib/bunny/client";
+
+const HERO_BG_VIDEO_GUID = "f82e5354-7df9-4d9c-b561-87029ed93bb1";
+
+function getHeroBgSrc(): string | null {
+  try {
+    const { src } = signEmbedUrl(HERO_BG_VIDEO_GUID, 7 * 24 * 60 * 60, {
+      autoplay: true,
+      loop: true,
+      muted: true,
+      preload: true,
+    });
+    return src;
+  } catch {
+    return null;
+  }
+}
 
 const tickerItems = [
   "IBS",
@@ -16,8 +35,22 @@ const tickerItems = [
 ];
 
 export function LandingHero() {
+  const bgVideoSrc = getHeroBgSrc();
+
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden bg-zinc-950 text-zinc-50 [--foreground:var(--color-zinc-50)] [--foreground-muted:var(--color-zinc-400)]">
+      {/* Vídeo de fundo (Bunny iframe, mount pós-hidratação) */}
+      <HeroBgVideo src={bgVideoSrc} />
+      {/* Lente escura por cima */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-20 bg-zinc-950/65"
+      />
+      {/* Vinheta — escurece bordas pra dar foco ao centro */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-20 bg-radial-[ellipse_at_center] from-transparent via-zinc-950/30 to-zinc-950/80"
+      />
       <TechBackdrop pattern="grid-fade" glow="center" />
 
       {/* ticker tech no topo */}
@@ -36,7 +69,7 @@ export function LandingHero() {
                 </span>
               ))}
             </div>
-            <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-background to-transparent" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-linear-to-l from-background to-transparent" />
           </div>
         </div>
       </div>
@@ -84,6 +117,11 @@ export function LandingHero() {
               <PlayCircle />
               Assistir aula gratuita
             </Link>
+          </div>
+
+          {/* Terminal log — system status tease */}
+          <div className="mx-auto mt-8 w-full max-w-md md:mx-0 md:max-w-lg">
+            <TerminalLog />
           </div>
         </div>
       </div>

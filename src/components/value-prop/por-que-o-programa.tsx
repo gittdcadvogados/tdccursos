@@ -1,36 +1,33 @@
 import Link from "next/link";
-import { ArrowRight, Check, PlayCircle, X } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, PlayCircle, X } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 
 type Pair = {
-  problem: string;
-  solution: string;
+  topic: string;
+  risk: string;
+  fix: string;
 };
 
 const PAIRS: Pair[] = [
   {
-    problem:
-      "CT-e preenchido no padrão antigo, com risco de glosa do crédito a partir de 2027.",
-    solution:
-      "CT-e e CT-e OS preenchidos no padrão SINIEF 24/2024, campo a campo, em oficina prática gravada.",
+    topic: "CT-e",
+    risk: "CT-e preenchido no padrão antigo, com risco de glosa do crédito a partir de 2027.",
+    fix: "CT-e e CT-e OS preenchidos no padrão SINIEF 24/2024, campo a campo, em oficina prática gravada.",
   },
   {
-    problem:
-      "Crédito acumulado de ICMS sem habilitação até 2028, perdido no ressarcimento de 20 anos.",
-    solution:
-      "Crédito acumulado de ICMS habilitado até 2028, com ressarcimento em 20 anos corrigido pelo IPCA.",
+    topic: "Crédito de ICMS",
+    risk: "Crédito acumulado de ICMS sem habilitação até 2028, perdido no ressarcimento de 20 anos.",
+    fix: "Crédito acumulado de ICMS habilitado até 2028, com ressarcimento em 20 anos corrigido pelo IPCA.",
   },
   {
-    problem:
-      "Frete precificado sem ajuste de carga tributária, com margem corroída em 2027.",
-    solution:
-      "Cálculo do aumento de carga tributária, repasse contratual estruturado e renegociação preparada antes de 2027.",
+    topic: "Frete",
+    risk: "Frete precificado sem ajuste de carga tributária, com margem corroída em 2027.",
+    fix: "Cálculo do aumento de carga tributária, repasse contratual estruturado e renegociação preparada antes de 2027.",
   },
   {
-    problem:
-      "Decisão pelo Simples Híbrido tomada no escuro, no prazo de setembro de 2026.",
-    solution:
-      "Simulação dos três regimes antes de setembro de 2026, com critério técnico de escolha pelo Simples Híbrido.",
+    topic: "Simples Híbrido",
+    risk: "Decisão pelo Simples Híbrido tomada no escuro, no prazo de setembro de 2026.",
+    fix: "Simulação dos três regimes antes de setembro de 2026, com critério técnico de escolha pelo Simples Híbrido.",
   },
 ];
 
@@ -53,75 +50,73 @@ export function PorQueOPrograma() {
           </p>
         </header>
 
-        {/* Cabeçalho das colunas */}
-        <div className="mt-12 hidden grid-cols-[1fr_auto_1fr] items-center gap-4 md:grid">
-          <div className="tech-mono inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground-muted">
-            <X className="h-3.5 w-3.5" />
-            Sem preparo
-          </div>
-          <div aria-hidden className="h-px w-6 bg-border" />
-          <div className="tech-mono inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-            <Check className="h-3.5 w-3.5" />
-            Com o PAT
-          </div>
-        </div>
-
-        {/* Pares */}
-        <ul className="mt-4 space-y-4 md:space-y-3">
+        <ul className="mt-12 grid gap-5 md:grid-cols-2 md:gap-6">
           {PAIRS.map((p, i) => (
             <li
-              key={i}
-              className="grid grid-cols-1 items-stretch gap-3 md:grid-cols-[1fr_auto_1fr]"
+              key={p.topic}
+              className="relative flex flex-col rounded-2xl border border-border bg-surface p-5 md:p-6"
             >
-              {/* Problema */}
-              <div className="flex items-start gap-3 rounded-xl border border-border bg-background/60 p-4 md:p-5">
-                <span
-                  aria-hidden
-                  className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-surface text-foreground-muted ring-1 ring-border"
-                >
-                  <X className="h-4 w-4" />
+              {/* Header do card */}
+              <div className="flex items-center justify-between gap-3 border-b border-border/60 pb-3">
+                <span className="tech-mono inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+                  <span>▸</span>
+                  {p.topic}
                 </span>
-                <div className="min-w-0 flex-1">
-                  <span className="tech-mono mb-1 inline-block text-[10px] font-semibold uppercase tracking-wider text-foreground-muted md:hidden">
-                    ▸ SEM_PREPARO
-                  </span>
-                  <p className="text-sm text-foreground-muted md:text-[15px]">
-                    {p.problem}
-                  </p>
-                </div>
+                <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-foreground-muted opacity-60">
+                  {String(i + 1).padStart(2, "0")} / {String(PAIRS.length).padStart(2, "0")}
+                </span>
               </div>
 
-              {/* Conector seta (só desktop) */}
+              {/* Antes — sem o PAT */}
+              <div className="mt-4">
+                <span className="mb-2 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-foreground-muted">
+                  <span
+                    aria-hidden
+                    className="grid h-5 w-5 place-items-center rounded-full bg-surface-muted ring-1 ring-border"
+                  >
+                    <X className="h-3 w-3" />
+                  </span>
+                  Sem o PAT
+                </span>
+                <p className="text-[15px] leading-relaxed text-foreground-muted">
+                  {p.risk}
+                </p>
+              </div>
+
+              {/* Conector de transformação */}
               <div
                 aria-hidden
-                className="hidden items-center justify-center md:flex"
+                className="my-4 flex items-center gap-3"
               >
-                <ArrowRight className="h-5 w-5 text-accent/70" />
+                <span className="h-px flex-1 bg-border" />
+                <span className="tech-mono inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-soft px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-soft-fg">
+                  <ArrowDown className="h-3 w-3" />
+                  vira
+                </span>
+                <span className="h-px flex-1 bg-border" />
               </div>
 
-              {/* Solução */}
-              <div className="flex items-start gap-3 rounded-xl border border-accent/30 bg-accent-soft/40 p-4 md:p-5">
-                <span
-                  aria-hidden
-                  className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-accent text-white"
-                >
-                  <Check className="h-4 w-4" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <span className="tech-mono mb-1 inline-block text-[10px] font-semibold uppercase tracking-wider text-accent md:hidden">
-                    ▸ COM_O_PAT
+              {/* Depois — com o PAT */}
+              <div className="rounded-xl border border-accent/30 bg-accent-soft/50 p-4">
+                <span className="mb-2 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-accent-soft-fg">
+                  <span
+                    aria-hidden
+                    className="grid h-5 w-5 place-items-center rounded-full bg-accent text-white"
+                  >
+                    <Check className="h-3 w-3" />
                   </span>
-                  <p className="text-sm font-medium text-foreground md:text-[15px]">
-                    {p.solution}
-                  </p>
-                </div>
+                  Com o PAT TDC
+                </span>
+                <p className="text-[15px] font-medium leading-relaxed text-foreground">
+                  {p.fix}
+                </p>
               </div>
             </li>
           ))}
         </ul>
 
         {/* CTAs */}
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row md:items-start md:justify-start">
+        <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row md:items-start md:justify-start">
           <Link href="/sobre" className={buttonVariants({ size: "lg" })}>
             Ver grade completa
             <ArrowRight />

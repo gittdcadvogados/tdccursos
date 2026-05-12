@@ -23,7 +23,7 @@ export default function HomePage() {
       <PorQueOPrograma />
       <LandingStats />
       <ModulesOverview />
-      <DecisoesCriticas />
+      <DecisoesCriticas withVisual />
       <Testimonials />
       <InstructorBio />
       <FaqSection />
