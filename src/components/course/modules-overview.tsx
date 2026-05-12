@@ -84,16 +84,16 @@ export function ModulesOverview() {
         <header className="mx-auto max-w-3xl text-center md:mx-0 md:text-left">
           <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
             <span>▸</span>
-            ESTRUTURA_DO_PROGRAMA
+            CONTEUDO_DO_PROGRAMA
           </span>
           <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight md:text-4xl">
-            Sete módulos. Uma sequência de decisões.
+            Do regulamento ao caixa, em sete módulos
           </h2>
           <p className="mt-4 text-pretty text-foreground-muted md:text-lg">
-            Do fundamento conceitual do IBS/CBS até a precificação do frete e
-            o planejamento da transição. Cada módulo fecha um bloco de
-            decisões que a Reforma cobra do seu cliente — ou do seu caixa —
-            entre 2026 e 2033.
+            A formação parte da arquitetura constitucional do IBS e da CBS,
+            percorre a aplicação prática nas operações de transporte, créditos
+            e obrigações acessórias, e chega às decisões de planejamento que
+            definem o resultado da empresa na transição.
           </p>
         </header>
 

@@ -10,27 +10,27 @@ type Pair = {
 const PAIRS: Pair[] = [
   {
     problem:
-      "CT-e preenchido no padrão antigo, com risco de glosa do crédito a partir de 2027",
+      "CT-e preenchido no padrão antigo, com risco de glosa do crédito a partir de 2027.",
     solution:
-      "CT-e e CT-e OS no padrão SINIEF 24/2024, campo a campo, em oficina prática",
+      "CT-e e CT-e OS preenchidos no padrão SINIEF 24/2024, campo a campo, em oficina prática gravada.",
   },
   {
     problem:
-      "Crédito acumulado de ICMS sem habilitação até 2028, perdido no ressarcimento de 20 anos",
+      "Crédito acumulado de ICMS sem habilitação até 2028, perdido no ressarcimento de 20 anos.",
     solution:
-      "Habilitação até 2028, ressarcimento em 20 anos com correção pelo IPCA",
+      "Crédito acumulado de ICMS habilitado até 2028, com ressarcimento em 20 anos corrigido pelo IPCA.",
   },
   {
     problem:
-      "Frete precificado sem ajuste de carga tributária — margem corrói em 2027",
+      "Frete precificado sem ajuste de carga tributária, com margem corroída em 2027.",
     solution:
-      "Cálculo do aumento de carga, repasse contratual e renegociação preparada",
+      "Cálculo do aumento de carga tributária, repasse contratual estruturado e renegociação preparada antes de 2027.",
   },
   {
     problem:
-      "Decisão do Simples Híbrido tomada no escuro no prazo de setembro/2026",
+      "Decisão pelo Simples Híbrido tomada no escuro, no prazo de setembro de 2026.",
     solution:
-      "Simulação dos três regimes antes de setembro/2026, com critério de escolha",
+      "Simulação dos três regimes antes de setembro de 2026, com critério técnico de escolha pelo Simples Híbrido.",
   },
 ];
 
@@ -44,11 +44,11 @@ export function PorQueOPrograma() {
             POR_QUE_O_PROGRAMA
           </span>
           <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight md:text-4xl">
-            A transição não perdoa improviso.
+            A transição não perdoa improviso
           </h2>
           <p className="mt-4 text-pretty text-foreground-muted md:text-lg">
-            Entre 2026 e 2033, cada decisão fiscal do seu cliente — ou do seu
-            caixa — passa por IBS, CBS e o que sobra do ICMS. O Programa de
+            Entre 2026 e 2033, cada decisão fiscal do seu cliente, ou do seu
+            caixa, passa por IBS, CBS e pelo que sobra do ICMS. O Programa de
             Adaptação Tributária organiza essas decisões em sete módulos.
           </p>
         </header>
