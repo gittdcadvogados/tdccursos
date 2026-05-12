@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BookOpen } from "lucide-react";
+import { BookOpen, PlayCircle } from "lucide-react";
 import { TechBackdrop } from "@/components/ui/tech-backdrop";
 
 type ModuleEntry = {
@@ -146,6 +146,13 @@ export function ModulesOverview() {
                       </div>
                     </div>
                   )}
+
+                  {/* Play icon central */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="grid h-14 w-14 place-items-center rounded-full border border-white/40 bg-black/40 text-white shadow-lg backdrop-blur-sm transition group-hover:scale-110 group-hover:border-accent group-hover:bg-accent/80">
+                      <PlayCircle className="h-7 w-7" />
+                    </span>
+                  </div>
                 </div>
 
                 {/* Summary */}
