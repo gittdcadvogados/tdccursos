@@ -166,8 +166,8 @@ export default async function AulaPage(props: PageProps<"/aula/[slug]">) {
       : 0;
 
   return (
-    <div className="flex h-screen flex-col">
-      {/* Top bar */}
+    <div className="flex min-h-0 flex-1 flex-col">
+      {/* Top bar do módulo (abaixo do header global) */}
       <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border bg-surface px-3 md:px-5">
         <div className="flex min-w-0 items-center gap-3">
           <Link
