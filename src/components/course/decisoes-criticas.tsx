@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -42,7 +43,7 @@ type Props = {
   maxWidth?: "content" | "narrow";
   /** Padding vertical da seção. */
   padding?: "section" | "compact";
-  /** Layout 2 colunas — texto à esquerda, slot pra GIF à direita. */
+  /** Layout 2 colunas — texto à esquerda, vídeo à direita. */
   withVisual?: boolean;
 };
 
@@ -125,49 +126,48 @@ export function DecisoesCriticas({
   );
 
   return (
-    <section className="relative">
+    <section
+      className={
+        withVisual
+          ? "relative border-y border-border bg-surface-muted"
+          : "relative"
+      }
+    >
       <div className={`mx-auto ${containerWidth} px-6 ${sectionPadding}`}>
         {withVisual ? (
           <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-2 md:gap-10 lg:gap-16">
             <div>{content}</div>
 
-            {/* Coluna 2 — slot pro GIF */}
+            {/* Coluna 2 — imagem ilustrativa */}
             <div className="relative w-full md:sticky md:top-24">
               <div
                 aria-hidden
                 className="glow-emerald absolute -inset-6 -z-10 opacity-40"
               />
-              <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-dashed border-border bg-surface-muted/40">
-                <div
-                  aria-hidden
-                  className="bg-grid-fade absolute inset-0 text-border/50"
+              <div className="relative aspect-3/4 w-full overflow-hidden rounded-2xl border border-border bg-zinc-950">
+                <Image
+                  src="/IMG/o-que-voce-aprende-v2.webp"
+                  alt="O que você sai fazendo no PAT TDC"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 600px"
+                  className="object-cover"
                 />
-                <div className="absolute inset-0 grid place-items-center">
-                  <div className="text-center">
-                    <span className="tech-mono block text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground-muted opacity-70">
-                      ▸ GIF_PENDENTE
-                    </span>
-                    <span className="tech-mono mt-2 block text-[9px] uppercase tracking-wider text-foreground-muted opacity-50">
-                      capacidades_pat.gif
-                    </span>
-                  </div>
-                </div>
-                {/* Brackets de canto */}
+                {/* Brackets de canto (HUD frame) */}
                 <span
                   aria-hidden
-                  className="absolute left-3 top-3 h-3 w-3 border-l border-t border-accent/60"
+                  className="absolute left-3 top-3 h-3 w-3 border-l border-t border-accent/70"
                 />
                 <span
                   aria-hidden
-                  className="absolute right-3 top-3 h-3 w-3 border-r border-t border-accent/60"
+                  className="absolute right-3 top-3 h-3 w-3 border-r border-t border-accent/70"
                 />
                 <span
                   aria-hidden
-                  className="absolute bottom-3 left-3 h-3 w-3 border-b border-l border-accent/60"
+                  className="absolute bottom-3 left-3 h-3 w-3 border-b border-l border-accent/70"
                 />
                 <span
                   aria-hidden
-                  className="absolute bottom-3 right-3 h-3 w-3 border-b border-r border-accent/60"
+                  className="absolute bottom-3 right-3 h-3 w-3 border-b border-r border-accent/70"
                 />
               </div>
             </div>
