@@ -22,10 +22,10 @@ export default function HomePage() {
       <LandingStats />
       <ModulesOverview />
       <DecisoesCriticas />
+      <Testimonials />
       <InstructorBio />
       <FaqSection />
       <FinalCta />
-      <Testimonials />
     </>
   );
 }
