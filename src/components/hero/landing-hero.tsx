@@ -18,7 +18,7 @@ const tickerItems = [
 
 export function LandingHero() {
   return (
-    <section className="relative overflow-hidden bg-zinc-950 text-zinc-50 [--foreground:var(--color-zinc-50)] [--foreground-muted:var(--color-zinc-400)]">
+    <section className="relative isolate overflow-hidden bg-zinc-950 text-zinc-50 [--foreground:var(--color-zinc-50)] [--foreground-muted:var(--color-zinc-400)]">
       {/* Vídeo de fundo (MP4 local auto-hospedado, 1MB) */}
       <video
         aria-hidden
