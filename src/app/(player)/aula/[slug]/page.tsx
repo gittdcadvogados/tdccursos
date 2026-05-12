@@ -304,6 +304,38 @@ export default async function AulaPage(props: PageProps<"/aula/[slug]">) {
         {/* Main content */}
         <main className="min-w-0 flex-1 overflow-y-auto">
           <div className="mx-auto max-w-4xl space-y-6 px-4 py-6 md:px-8 md:py-10">
+            {/* Título + meta — acima do player */}
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="tech-mono text-xs font-semibold uppercase tracking-wider text-accent">
+                  ▸{" "}
+                  {isWorkshop
+                    ? `OFICINA ${lesson.slug.replace("oficina-", "").padStart(2, "0")}`
+                    : `AULA ${lesson.position.toString().padStart(2, "0")}`}
+                </span>
+                {isWorkshop && (
+                  <span className="tech-mono rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-700 dark:bg-amber-950/40 dark:text-amber-500">
+                    PRATICA
+                  </span>
+                )}
+                {minutes !== null && (
+                  <span className="tech-mono inline-flex items-center gap-1 text-[11px] text-foreground-muted">
+                    <Clock className="h-3 w-3" />
+                    {minutes}min
+                  </span>
+                )}
+                {isCompleted && (
+                  <span className="tech-mono inline-flex items-center gap-1 rounded-full border border-accent/30 bg-accent-soft px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-soft-fg">
+                    <CheckCircle2 className="h-3 w-3" />
+                    Concluida
+                  </span>
+                )}
+              </div>
+              <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
+                {lesson.title}
+              </h1>
+            </div>
+
             {/* Player + barra de ações abaixo (cliente) */}
             <LessonControls
               lessonId={lesson.id}
@@ -339,38 +371,6 @@ export default async function AulaPage(props: PageProps<"/aula/[slug]">) {
                 </div>
               )}
             </LessonControls>
-
-            {/* Título + meta */}
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="tech-mono text-xs font-semibold uppercase tracking-wider text-accent">
-                  ▸{" "}
-                  {isWorkshop
-                    ? `OFICINA ${lesson.slug.replace("oficina-", "").padStart(2, "0")}`
-                    : `AULA ${lesson.position.toString().padStart(2, "0")}`}
-                </span>
-                {isWorkshop && (
-                  <span className="tech-mono rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-700 dark:bg-amber-950/40 dark:text-amber-500">
-                    PRATICA
-                  </span>
-                )}
-                {minutes !== null && (
-                  <span className="tech-mono inline-flex items-center gap-1 text-[11px] text-foreground-muted">
-                    <Clock className="h-3 w-3" />
-                    {minutes}min
-                  </span>
-                )}
-                {isCompleted && (
-                  <span className="tech-mono inline-flex items-center gap-1 rounded-full border border-accent/30 bg-accent-soft px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-soft-fg">
-                    <CheckCircle2 className="h-3 w-3" />
-                    Concluida
-                  </span>
-                )}
-              </div>
-              <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
-                {lesson.title}
-              </h1>
-            </div>
 
             {/* Sobre a aula */}
             {lesson.description && (
