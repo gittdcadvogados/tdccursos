@@ -1,12 +1,15 @@
+import Link from "next/link";
 import Image from "next/image";
-import { BookOpen, PlayCircle } from "lucide-react";
+import { ArrowRight, BookOpen, Clock, PlayCircle } from "lucide-react";
 import { TechBackdrop } from "@/components/ui/tech-backdrop";
 
 type ModuleEntry = {
   n: number;
+  slug: string;
   title: string;
-  summary: string;
   lessons: number;
+  /** Formato "Xh YYmin" — pré-calculado por módulo. */
+  duration: string;
   /**
    * URL da capa do módulo. Sobe a imagem em /public/img/modulos/ ou hospeda
    * externamente. Quando null, mostra fallback tech (grid + glow + MOD_XX).
@@ -17,58 +20,58 @@ type ModuleEntry = {
 const modules: ModuleEntry[] = [
   {
     n: 1,
+    slug: "tributacao-do-consumo",
     title: "A Nova Tributação do Consumo",
-    summary:
-      "Da CF/88 ao IBS/CBS: arquitetura do tributo dual, não cumulatividade ampla e cronograma 2026–2033.",
     lessons: 8,
+    duration: "2h 50min",
     image: null,
   },
   {
     n: 2,
+    slug: "cargas",
     title: "IBS e CBS no Transporte Rodoviário de Cargas",
-    summary:
-      "Incidência sobre frete, subcontratação, redespacho, exportação e multimodal — com split payment e o fim da informalidade no setor.",
     lessons: 11,
+    duration: "4h 45min",
     image: null,
   },
   {
     n: 3,
+    slug: "passageiros",
     title: "IBS e CBS no Transporte de Passageiros",
-    summary:
-      "Incidência no transporte intermunicipal, interestadual, internacional e urbano — com imunidade do transporte público, fretamento e revisão de contratos de longo prazo.",
     lessons: 5,
+    duration: "1h 55min",
     image: null,
   },
   {
     n: 4,
+    slug: "creditos",
     title: "Gestão de Créditos e Regimes Diferenciados",
-    summary:
-      "Crédito presumido do TAC pessoa física e MEI, bens de capital, Simples Nacional, cooperativas e gestão do crédito acumulado na transição.",
     lessons: 11,
+    duration: "4h 50min",
     image: null,
   },
   {
     n: 5,
+    slug: "icms-transicao",
     title: "ICMS na Transição",
-    summary:
-      "Coexistência com IBS/CBS, benefícios sem equivalente, ressarcimento em 20 anos e o ICMS na base do novo imposto em 2027.",
     lessons: 9,
+    duration: "3h 45min",
     image: null,
   },
   {
     n: 6,
+    slug: "obrigacoes-acessorias",
     title: "Obrigações Acessórias e Documentos Fiscais",
-    summary:
-      "CT-e e CT-e OS no padrão SINIEF 24/2024, MDF-e, GTV-e, EFD e a extinção do EFD-Contribuições. Inclui 2 oficinas práticas.",
     lessons: 10,
+    duration: "4h 45min",
     image: null,
   },
   {
     n: 7,
+    slug: "estrategia",
     title: "Estratégia e Planejamento na Transição",
-    summary:
-      "Lucro Real, Presumido e Simples; Simples Híbrido; precificação do frete; split payment no caixa; blindagem jurídica contra autuação.",
     lessons: 5,
+    duration: "2h 30min",
     image: null,
   },
 ];
@@ -92,7 +95,7 @@ export function ModulesOverview() {
           </p>
         </header>
 
-        <div className="mx-auto mt-12 max-w-4xl space-y-6">
+        <div className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2">
           {modules.map((m) => {
             const mod = m.n.toString().padStart(2, "0");
             return (
@@ -114,18 +117,24 @@ export function ModulesOverview() {
                     <span className="tech-mono shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-foreground-muted">
                       <BookOpen className="h-3 w-3" />
                       {m.lessons.toString().padStart(2, "0")} aulas
+                      <span className="text-border">·</span>
+                      <Clock className="h-2.5 w-2.5" />
+                      {m.duration}
                     </span>
                   </div>
                 </div>
 
-                {/* Imagem grande */}
-                <div className="relative aspect-12/5 w-full overflow-hidden bg-surface-muted">
+                {/* Imagem */}
+                <Link
+                  href={`/modulo/${m.slug}`}
+                  className="relative block aspect-12/5 w-full overflow-hidden bg-surface-muted"
+                >
                   {m.image ? (
                     <Image
                       src={m.image}
                       alt={m.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, 800px"
+                      sizes="(max-width: 768px) 100vw, 700px"
                       className="object-cover transition duration-500 group-hover:scale-[1.02]"
                     />
                   ) : (
@@ -140,7 +149,7 @@ export function ModulesOverview() {
                       />
                       <div
                         aria-hidden
-                        className="tech-mono pointer-events-none absolute inset-0 flex items-center justify-center text-8xl font-bold uppercase tracking-tighter text-accent/15"
+                        className="tech-mono pointer-events-none absolute inset-0 flex items-center justify-center text-7xl font-bold uppercase tracking-tighter text-accent/15 md:text-8xl"
                       >
                         MOD_{mod}
                       </div>
@@ -153,14 +162,16 @@ export function ModulesOverview() {
                       <PlayCircle className="h-7 w-7" />
                     </span>
                   </div>
-                </div>
+                </Link>
 
-                {/* Summary */}
-                <div className="px-5 py-5 md:px-6 md:py-6">
-                  <p className="text-sm text-foreground-muted md:text-[15px]">
-                    {m.summary}
-                  </p>
-                </div>
+                {/* Footer */}
+                <Link
+                  href={`/modulo/${m.slug}`}
+                  className="tech-mono mt-auto inline-flex items-center justify-between border-t border-border bg-surface-muted/30 px-5 py-3.5 text-[11px] font-semibold uppercase tracking-wider text-accent transition hover:bg-accent-soft/40 md:px-6"
+                >
+                  <span>▸ Ver detalhes do módulo</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
               </article>
             );
           })}
