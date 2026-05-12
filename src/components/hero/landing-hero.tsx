@@ -82,6 +82,9 @@ export function LandingHero() {
             </Link>
           </div>
 
+          <p className="tech-mono mt-6 text-center text-[11px] uppercase tracking-[0.18em] text-foreground-muted md:text-left">
+            ▸ Programa de Adaptação Tributária — <span className="text-accent">PAT TDC</span>
+          </p>
         </div>
       </div>
     </section>
