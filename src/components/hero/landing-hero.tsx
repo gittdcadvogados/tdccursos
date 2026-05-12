@@ -57,6 +57,10 @@ export function LandingHero() {
             <span className="text-accent">Adaptação Tributária</span>
           </h1>
 
+          <p className="tech-mono mt-3 text-center text-[11px] uppercase tracking-[0.18em] text-foreground-muted md:text-left">
+            ▸ Programa de Adaptação Tributária — <span className="text-accent">PAT TDC</span>
+          </p>
+
           <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-foreground-muted md:mx-0 md:text-lg">
             IBS, CBS e ICMS aplicados à operação real, da incidência ao CT-e,
             do crédito ao planejamento da transição 2026–2033. São sete
@@ -81,10 +85,6 @@ export function LandingHero() {
               Assistir aula gratuita
             </Link>
           </div>
-
-          <p className="tech-mono mt-6 text-center text-[11px] uppercase tracking-[0.18em] text-foreground-muted md:text-left">
-            ▸ Programa de Adaptação Tributária — <span className="text-accent">PAT TDC</span>
-          </p>
         </div>
       </div>
     </section>
