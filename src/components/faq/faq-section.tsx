@@ -39,8 +39,8 @@ export function FaqSection() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="mx-auto max-w-3xl px-6 py-20 md:py-24">
-      <header className="text-center md:text-left">
+    <section className="mx-auto max-w-content px-6 py-20 md:py-24">
+      <header className="max-w-3xl text-center md:text-left">
         <span className="tech-mono inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
           <span>▸</span>
           DÚVIDAS_FREQUENTES
@@ -50,7 +50,7 @@ export function FaqSection() {
         </h2>
       </header>
 
-      <div className="mt-10 space-y-3">
+      <div className="mt-10 space-y-3 max-w-3xl">
         {faqs.map((f, i) => {
           const isOpen = open === i;
           return (
