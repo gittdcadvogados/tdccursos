@@ -7,6 +7,7 @@ import {
   Award,
   BookOpen,
   CheckCircle2,
+  ChevronRight,
   Clock,
   GraduationCap,
   Infinity as InfinityIcon,
@@ -26,6 +27,7 @@ type LessonRow = {
   id: string;
   slug: string;
   title: string;
+  description: string | null;
   position: number;
   duration_seconds: number | null;
 };
@@ -48,7 +50,7 @@ export default async function ModuloPage(props: PageProps<"/modulo/[slug]">) {
   const { data: mod } = await supabase
     .from("modules")
     .select(
-      "id, slug, title, description, position, course_id, courses!inner(slug, title, cover_url), lessons(id, slug, title, position, duration_seconds)",
+      "id, slug, title, description, position, course_id, courses!inner(slug, title, cover_url), lessons(id, slug, title, description, position, duration_seconds)",
     )
     .eq("slug", slug)
     .order("position", { referencedTable: "lessons", ascending: true })
@@ -270,6 +272,101 @@ export default async function ModuloPage(props: PageProps<"/modulo/[slug]">) {
                 </div>
               ))}
             </div>
+          </section>
+
+          {/* Currículo — todas as aulas do módulo */}
+          <section id="curriculo" className="space-y-4">
+            <div className="flex items-end justify-between gap-3">
+              <div>
+                <span className="tech-mono text-[11px] font-semibold uppercase tracking-wider text-accent">
+                  ▸ CURRICULO
+                </span>
+                <h2 className="mt-1 text-xl font-semibold tracking-tight md:text-2xl">
+                  {total.toString().padStart(2, "0")} aulas neste módulo
+                </h2>
+              </div>
+              <span className="tech-mono shrink-0 text-[11px] uppercase tracking-wider text-foreground-muted">
+                {done.toString().padStart(2, "0")} /{" "}
+                {total.toString().padStart(2, "0")} concluídas
+              </span>
+            </div>
+
+            <ul className="overflow-hidden rounded-xl border border-border bg-surface">
+              {mod.lessons?.map((lesson, idx) => {
+                const isDone = completedSet.has(lesson.id);
+                const isWorkshop = lesson.slug.startsWith("oficina");
+                const minutes = lesson.duration_seconds
+                  ? Math.round(lesson.duration_seconds / 60)
+                  : null;
+                const isLast = idx === (mod.lessons?.length ?? 0) - 1;
+
+                return (
+                  <li
+                    key={lesson.id}
+                    className={cn("border-border", !isLast && "border-b")}
+                  >
+                    <Link
+                      href={`/aula/${lesson.slug}`}
+                      className="group flex items-start gap-4 px-4 py-4 transition hover:bg-surface-muted md:px-5"
+                    >
+                      <span
+                        className={cn(
+                          "grid h-10 w-10 shrink-0 place-items-center rounded-full border ring-2 ring-transparent transition group-hover:ring-accent/20",
+                          isDone
+                            ? "border-accent/30 bg-accent-soft text-accent"
+                            : "border-border bg-surface text-foreground-muted",
+                        )}
+                      >
+                        {isDone ? (
+                          <CheckCircle2 className="h-4 w-4" />
+                        ) : (
+                          <PlayCircle className="h-4 w-4" />
+                        )}
+                      </span>
+
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-foreground-muted">
+                            {isWorkshop
+                              ? `OFICINA_${lesson.slug.replace("oficina-", "").padStart(2, "0")}`
+                              : `AULA_${lesson.position.toString().padStart(2, "0")}`}
+                          </span>
+                          {isWorkshop && (
+                            <span className="tech-mono rounded-full bg-amber-50 px-1.5 py-0.5 text-[9px] font-semibold uppercase text-amber-700 dark:bg-amber-950/40 dark:text-amber-500">
+                              PRATICA
+                            </span>
+                          )}
+                          {isDone && (
+                            <span className="tech-mono inline-flex items-center gap-1 rounded-full border border-accent/30 bg-accent-soft px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-accent-soft-fg">
+                              <CheckCircle2 className="h-2.5 w-2.5" />
+                              Concluida
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-0.5 text-sm font-medium md:text-base">
+                          {lesson.title}
+                        </div>
+                        {lesson.description && (
+                          <p className="mt-1 line-clamp-2 text-xs text-foreground-muted md:text-[13px]">
+                            {lesson.description}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex shrink-0 items-center gap-3">
+                        {minutes !== null && (
+                          <span className="tech-mono hidden items-center gap-1 text-xs text-foreground-muted sm:inline-flex">
+                            <Clock className="h-3.5 w-3.5" />
+                            {minutes}min
+                          </span>
+                        )}
+                        <ChevronRight className="h-4 w-4 text-foreground-muted transition group-hover:translate-x-0.5 group-hover:text-accent" />
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </section>
 
         </div>
