@@ -32,20 +32,27 @@ export async function markLessonCompleted(formData: FormData) {
 // =========================
 // Anotações pessoais
 // =========================
-export async function saveLessonNote(formData: FormData) {
+export type SaveNoteState = { ok: boolean; error?: string } | null;
+
+export async function saveLessonNote(
+  _prev: SaveNoteState,
+  formData: FormData,
+): Promise<SaveNoteState> {
   const lessonId = String(formData.get("lesson_id") ?? "");
   const lessonSlug = String(formData.get("lesson_slug") ?? "");
   const body = String(formData.get("body") ?? "").trim().slice(0, 20000);
 
-  if (!lessonId) return;
+  if (!lessonId) return { ok: false, error: "ID da aula ausente." };
 
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return;
+  if (!user) {
+    return { ok: false, error: "Sessão expirada. Faça login novamente." };
+  }
 
-  await supabase.from("lesson_notes").upsert(
+  const { error } = await supabase.from("lesson_notes").upsert(
     {
       user_id: user.id,
       lesson_id: lessonId,
@@ -55,7 +62,13 @@ export async function saveLessonNote(formData: FormData) {
     { onConflict: "user_id,lesson_id" },
   );
 
+  if (error) {
+    console.error("[saveLessonNote] supabase error:", error);
+    return { ok: false, error: error.message };
+  }
+
   if (lessonSlug) revalidatePath(`/aula/${lessonSlug}`);
+  return { ok: true };
 }
 
 // =========================

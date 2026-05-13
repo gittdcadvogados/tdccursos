@@ -1,6 +1,9 @@
+"use client";
+
+import { useActionState } from "react";
 import { NotebookPen } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { saveLessonNote } from "@/app/(player)/aula/actions";
+import { saveLessonNote, type SaveNoteState } from "@/app/(player)/aula/actions";
 
 type Props = {
   lessonId: string;
@@ -30,6 +33,10 @@ export function LessonNotes({
   initialBody,
   updatedAt,
 }: Props) {
+  const [state, formAction, pending] = useActionState<SaveNoteState, FormData>(
+    saveLessonNote,
+    null,
+  );
   const updatedLabel = formatUpdated(updatedAt);
 
   return (
@@ -49,7 +56,7 @@ export function LessonNotes({
         Suas anotações privadas desta aula. Só você vê.
       </p>
 
-      <form action={saveLessonNote} className="space-y-3">
+      <form action={formAction} className="space-y-3">
         <input type="hidden" name="lesson_id" value={lessonId} />
         <input type="hidden" name="lesson_slug" value={lessonSlug} />
         <textarea
@@ -60,9 +67,21 @@ export function LessonNotes({
           maxLength={20000}
           className="block w-full resize-y rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-foreground-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
         />
-        <div className="flex items-center justify-end">
-          <Button type="submit" size="sm">
-            Salvar anotação
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex-1 text-xs">
+            {state?.error && (
+              <span className="font-medium text-red-600 dark:text-red-400">
+                ⚠ {state.error}
+              </span>
+            )}
+            {state?.ok && (
+              <span className="font-medium text-accent">
+                ✓ Anotação salva
+              </span>
+            )}
+          </div>
+          <Button type="submit" size="sm" disabled={pending}>
+            {pending ? "Salvando..." : "Salvar anotação"}
           </Button>
         </div>
       </form>

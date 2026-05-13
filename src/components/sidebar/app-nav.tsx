@@ -109,7 +109,7 @@ export function AppNav() {
         </nav>
 
         {/* Card promocional — vibe Acadia mas em tema TDC */}
-        <div className="mt-6 overflow-hidden rounded-lg border border-border bg-linear-to-br from-emerald-50 to-emerald-100 p-4 dark:from-emerald-950/40 dark:to-emerald-900/20">
+        <div className="mt-6 overflow-hidden rounded-lg border border-accent/30 bg-accent-soft p-4">
           <div className="tech-mono text-[10px] font-semibold uppercase tracking-wider text-accent">
             ▸ AULA_GRATUITA
           </div>
