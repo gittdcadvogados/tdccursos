@@ -50,7 +50,7 @@ export function FaqSection() {
         </h2>
       </header>
 
-      <div className="mt-10 space-y-3 max-w-3xl">
+      <div className="mt-10 space-y-3">
         {faqs.map((f, i) => {
           const isOpen = open === i;
           return (

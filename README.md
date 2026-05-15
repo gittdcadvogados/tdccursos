@@ -1,4 +1,4 @@
-# Plataforma TDC — Oratória para Advogados
+# Plataforma TDC — Tributação do Transporte na Reforma Tributária
 
 MVP de plataforma de cursos em **Next.js 16 (App Router) + Supabase + Tailwind 4**.
 Vídeos servidos pelo **Bunny Stream**.
@@ -7,11 +7,12 @@ Vídeos servidos pelo **Bunny Stream**.
 
 - Autenticação por e-mail/senha via Supabase (login, cadastro, logout).
 - Rotas protegidas por `proxy.ts` (Next.js 16 — antigo `middleware.ts`).
-- Esquema Postgres com RLS: `courses`, `modules`, `lessons`, `enrollments`, `lesson_progress`.
+- Esquema Postgres com RLS: `courses`, `modules`, `lessons`, `enrollments`, `lesson_progress`, `live_sessions`.
+- Drip release de aulas (`lessons.release_at`) e calendário de tira-dúvidas ao vivo.
 - Dashboard listando módulos a que o aluno tem matrícula ativa.
 - Página de módulo listando aulas.
 - Página de aula com player Bunny Stream e botão "Marcar como concluída".
-- Seed inicial com os 4 módulos do curso TDC.
+- Seed do curso de Reforma Tributária com 7 módulos, 57 aulas + 2 oficinas e 7 sessões ao vivo.
 
 ## Pré-requisitos
 
@@ -34,8 +35,10 @@ Edite `.env.local` com as chaves do seu projeto Supabase
 
 No painel do Supabase, abra **SQL Editor** e execute, **nesta ordem**:
 
-1. `supabase/migrations/0001_init.sql` — cria tabelas, trigger e RLS.
-2. `supabase/seed.sql` — insere o curso "Oratória TDC" com os 4 módulos.
+1. `supabase/migrations/0001_init.sql` — cria tabelas base, trigger e RLS.
+2. `supabase/migrations/0002_profile_avatar_sync.sql` ... `0005_lesson_comments_notes.sql` — migrations subsequentes (avatar, leads, orders, comentários/anotações).
+3. `supabase/migrations/0006_drip_release_and_live_sessions.sql` — coluna `lessons.release_at` (drip) + tabela `live_sessions` com RLS.
+4. `supabase/seed.sql` — insere o curso **Tributação do Transporte Rodoviário na Reforma Tributária** (7 módulos, 57 aulas + 2 oficinas) e 7 sessões ao vivo com datas oficiais.
 
 ### 3. Subir os vídeos no Bunny Stream
 
@@ -46,9 +49,9 @@ No painel do Supabase, abra **SQL Editor** e execute, **nesta ordem**:
 
 ```sql
 update public.lessons
-set bunny_library_id = '123456',
+set bunny_library_id = '658304',
     bunny_video_guid = 'a1b2c3d4-...'
-where slug = 'aula-1';
+where slug = 'aula-1-1';
 ```
 
 ### 4. Liberar acesso para um aluno
@@ -61,7 +64,7 @@ insert into public.enrollments (user_id, course_id)
 select u.id, c.id
 from auth.users u, public.courses c
 where u.email = 'aluno@exemplo.com'
-  and c.slug  = 'oratoria-tdc';
+  and c.slug  = 'reforma-tributaria-transporte';
 ```
 
 ### 5. Rodar o app

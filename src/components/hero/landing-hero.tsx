@@ -47,11 +47,6 @@ export function LandingHero() {
       {/* ticker tech no topo */}
       <div className="border-b border-border/60 bg-background/40 backdrop-blur">
         <div className="mx-auto flex max-w-content items-center gap-3 px-6 py-2 text-xs">
-          <span className="tech-pulse inline-flex h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-          <span className="tech-mono shrink-0 text-foreground-muted">
-            CURSO_v2.0
-          </span>
-          <span className="text-border">·</span>
           <div className="relative flex flex-1 overflow-hidden">
             <div className="tech-marquee flex shrink-0 gap-6 whitespace-nowrap pr-6">
               {[...tickerItems, ...tickerItems].map((item, i) => (

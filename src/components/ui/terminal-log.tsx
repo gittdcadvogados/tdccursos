@@ -1,11 +1,12 @@
 type LogLine = { tag: string; text: string };
 
 const LINES: LogLine[] = [
-  { tag: "IBS", text: "initialized..." },
-  { tag: "CBS", text: "mapping..." },
-  { tag: "CT-e", text: "validation in progress" },
-  { tag: "split_payment", text: "active" },
-  { tag: "credit_flow", text: "synced." },
+  { tag: "2026", text: "ano-teste — IBS/CBS em alíquota reduzida" },
+  { tag: "2027", text: "CBS cheia · PIS/COFINS extintos" },
+  { tag: "2028", text: "IBS mantém alíquota de teste" },
+  { tag: "2029", text: "ICMS/ISS iniciam redução escalonada" },
+  { tag: "2030–32", text: "IBS sobe · ICMS/ISS recuam ano a ano" },
+  { tag: "2033", text: "ICMS e ISS extintos — sistema pleno" },
 ];
 
 type Props = {
@@ -17,7 +18,7 @@ type Props = {
 
 export function TerminalLog({
   lines = LINES,
-  shellLabel = "~/transição_2026 — sh",
+  shellLabel = "~/transição_2026–2033 — sh",
 }: Props) {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/80 backdrop-blur-sm">
