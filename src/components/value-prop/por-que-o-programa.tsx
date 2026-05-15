@@ -88,7 +88,6 @@ export function PorQueOPrograma() {
                 aria-hidden
                 className="my-4 flex items-center gap-3"
               >
-                <span className="h-px flex-1 bg-border" />
                 <span className="tech-mono inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-soft px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-soft-fg">
                   <ArrowDown className="h-3 w-3" />
                   vira
