@@ -72,7 +72,7 @@ export function DecisoesCriticas({
           Da norma à decisão, na operação real
         </span>
         <h2 className="tech-mono mt-3 text-balance text-2xl font-bold uppercase tracking-tight text-foreground md:text-4xl">
-          O_QUE_VOCE_SAI_FAZENDO
+          O_QUE_VOCE_VAI_APRENDER
         </h2>
         <p className="mt-4 text-pretty text-foreground-muted md:text-lg">
           O programa não para na explicação da lei. Cada módulo termina em uma

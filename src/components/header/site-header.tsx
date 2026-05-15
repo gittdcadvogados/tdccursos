@@ -3,6 +3,7 @@ import { Logo } from "@/components/ui/logo";
 import { buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { createClient } from "@/lib/supabase/server";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/aula-inaugural", label: "Aula gratuita" },
@@ -49,11 +50,14 @@ export async function SiteHeader() {
               >
                 Área do aluno
               </Link>
-              <Link href="/cadastro" className={buttonVariants({ size: "sm" })}>
-                <span className="sm:hidden">Inscrever-se</span>
-                <span className="hidden sm:inline">
-                  Inscrever-se no curso
-                </span>
+              <Link
+                href="/cadastro"
+                className={cn(
+                  buttonVariants({ size: "sm" }),
+                  "hidden sm:inline-flex",
+                )}
+              >
+                Inscrever-se no curso
               </Link>
             </>
           )}
