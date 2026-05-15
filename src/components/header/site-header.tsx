@@ -54,7 +54,7 @@ export async function SiteHeader() {
                 href="/cadastro"
                 className={cn(
                   buttonVariants({ size: "sm" }),
-                  "hidden sm:inline-flex",
+                  "hidden md:inline-flex",
                 )}
               >
                 Inscrever-se no curso
