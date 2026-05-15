@@ -16,8 +16,7 @@ export function ConstructionBanner() {
           ·
         </span>
         <span className="text-xs text-amber-700 dark:text-amber-300">
-          Site em construção — template em desenvolvimento, conteúdo e valores
-          ilustrativos
+          Site em desenvolvimento, conteúdo template
         </span>
       </div>
     </div>
