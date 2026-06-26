@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -94,12 +95,15 @@ export default function RafaelLinkInBioPage() {
               aria-hidden
               className="glow-emerald absolute inset-0 -z-10 h-full w-full"
             />
-            <div
-              aria-label="Rafael Vieira"
-              className="relative grid h-28 w-28 place-items-center overflow-hidden rounded-full border-2 border-accent/70 bg-linear-to-br from-zinc-800 to-zinc-900 text-3xl font-semibold tracking-tight text-zinc-100 ring-4 ring-zinc-950"
-            >
-              {/* Troque por <Image src="/IMG/rafael.jpg" .../> quando a foto estiver disponível. */}
-              RV
+            <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-accent/70 bg-zinc-900 ring-4 ring-zinc-950">
+              <Image
+                src="/IMG/rafael-vieira.jpg"
+                alt="Rafael Vieira"
+                fill
+                sizes="112px"
+                className="object-cover"
+                priority
+              />
             </div>
             <span
               aria-hidden
